@@ -1,11 +1,14 @@
 package org.saphka.entity.extension.configuration;
 
 import groovy.lang.GroovyClassLoader;
+import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import java.util.Arrays;
 
 @Configuration
 public class EntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
@@ -27,6 +30,11 @@ public class EntityManagerFactoryBeanPostProcessor implements BeanPostProcessor 
 
 	private void postProcess(LocalContainerEntityManagerFactoryBean bean) {
 		bean.setPersistenceUnitPostProcessors((mutableUnitInfo) -> {
+			mutableUnitInfo.getProperties().put(
+					AvailableSettings.LOADED_CLASSES,
+					Arrays.asList(groovyClassLoader.getLoadedClasses())
+
+			);
 			mutableUnitInfo.addManagedClassName(GroovyConfiguration.packageName + "." + GroovyConfiguration.className);
 		});
 	}

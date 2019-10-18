@@ -15,8 +15,10 @@ public class GroovyConfiguration {
 			"package " + packageName + "\n" +
 			"import groovy.transform.MapConstructor\n" +
 			"import groovy.transform.Canonical\n" +
-			"import javax.persistence.Embeddable\n" +
-			"@Embeddable @Canonical @MapConstructor class " + className + " implements " + MyEntityExtension.class.getCanonicalName() + "{\n" +
+			"@Canonical @MapConstructor " +
+//			"@javax.persistence.Entity " +
+			"@javax.persistence.Embeddable " +
+			"class " + className + " implements " + MyEntityExtension.class.getCanonicalName() + "{\n" +
 			"     String first, last\n" +
 			"     int age\n" +
 			" }";

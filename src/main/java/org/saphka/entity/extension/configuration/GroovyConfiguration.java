@@ -1,6 +1,7 @@
 package org.saphka.entity.extension.configuration;
 
 import groovy.lang.GroovyClassLoader;
+import org.saphka.entity.extension.entity.MyEntityExtension;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
@@ -8,14 +9,14 @@ import org.springframework.util.ClassUtils;
 @Configuration
 public class GroovyConfiguration {
 
-	public final static String packageName = "org.saphka.entity.extension";
+	public final static String packageName = MyEntityExtension.class.getPackage().getName();
 	public final static String className = "MyEntityExtensionGroovyImpl";
 	private final static String groovyText = "" +
 			"package " + packageName + "\n" +
 			"import groovy.transform.MapConstructor\n" +
 			"import groovy.transform.Canonical\n" +
 			"import javax.persistence.Embeddable\n" +
-			"@Embeddable @Canonical @MapConstructor class " + className + " implements org.saphka.test.entity.MyEntityExtension {\n" +
+			"@Embeddable @Canonical @MapConstructor class " + className + " implements " + MyEntityExtension.class.getCanonicalName() + "{\n" +
 			"     String first, last\n" +
 			"     int age\n" +
 			" }";

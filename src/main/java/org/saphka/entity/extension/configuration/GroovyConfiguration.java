@@ -15,12 +15,14 @@ public class GroovyConfiguration {
 			"package " + packageName + "\n" +
 			"import groovy.transform.MapConstructor\n" +
 			"import groovy.transform.Canonical\n" +
+			"import javax.persistence.Column\n" +
 			"@Canonical @MapConstructor " +
 //			"@javax.persistence.Entity " +
 			"@javax.persistence.Embeddable " +
 			"class " + className + " implements " + MyEntityExtension.class.getCanonicalName() + "{\n" +
-			"     String first, last\n" +
-			"     int age\n" +
+			"     @Column String first\n" +
+			"	  @Column String last\n" +
+			"     @Column Integer age\n" +
 			" }";
 
 	private final static GroovyClassLoader loader = new GroovyClassLoader(ClassUtils.getDefaultClassLoader());

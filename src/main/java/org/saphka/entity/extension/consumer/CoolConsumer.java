@@ -31,7 +31,7 @@ public class CoolConsumer implements InitializingBean {
 
 		Class<?> aClass = groovyClassLoader.loadClass(GroovyConfiguration.packageName + "." + GroovyConfiguration.className);
 
-		Map<String, Object> data = new HashMap<>();
+		HashMap<String, Object> data = new HashMap<>();
 		data.put("first", "Foo");
 		data.put("last", "Bar");
 

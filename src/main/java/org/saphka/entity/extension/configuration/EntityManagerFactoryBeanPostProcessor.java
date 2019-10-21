@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class EntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
@@ -34,6 +35,10 @@ public class EntityManagerFactoryBeanPostProcessor implements BeanPostProcessor 
 					AvailableSettings.LOADED_CLASSES,
 					Arrays.asList(groovyClassLoader.getLoadedClasses())
 
+			);
+			mutableUnitInfo.getProperties().put(
+					AvailableSettings.CLASSLOADERS,
+					Collections.singletonList(groovyClassLoader)
 			);
 			mutableUnitInfo.addManagedClassName(GroovyConfiguration.packageName + "." + GroovyConfiguration.className);
 		});

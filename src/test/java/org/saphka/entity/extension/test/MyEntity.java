@@ -13,6 +13,9 @@ public class MyEntity {
 	@Embedded
 	private MyEntityExtension extension;
 
+	@Embedded
+	private MyEntityExtensionEmpty empty;
+
 	public Long getId() {
 		return id;
 	}
@@ -27,5 +30,13 @@ public class MyEntity {
 
 	public void setExtension(MyEntityExtension extension) {
 		this.extension = extension;
+	}
+
+	public MyEntityExtensionEmpty getEmpty() {
+		return empty;
+	}
+
+	public void setEmpty(MyEntityExtensionEmpty empty) {
+		this.empty = empty;
 	}
 }

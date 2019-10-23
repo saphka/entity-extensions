@@ -29,7 +29,7 @@ public class SimpleExtensionTest {
 
 	@Configuration
 	@EnableJpaRepositories(basePackages = {"org.saphka.entity.extension.test"})
-	@EnableDynamicExtensions
+	@EnableDynamicExtensions(basePackages = {"org.saphka.entity.extension.test"})
 	public static class TestConfiguration {
 	}
 

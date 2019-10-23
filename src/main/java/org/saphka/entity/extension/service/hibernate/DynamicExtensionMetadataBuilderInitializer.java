@@ -1,4 +1,4 @@
-package org.saphka.entity.extension.service;
+package org.saphka.entity.extension.service.hibernate;
 
 import org.hibernate.annotations.Target;
 import org.hibernate.annotations.common.reflection.AnnotationReader;
@@ -32,6 +32,7 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 
 		MetadataBuilderImplementor builderImplementor = (MetadataBuilderImplementor) metadataBuilder;
 
+		@SuppressWarnings("deprecation")
 		MetadataProviderInjector metadataProviderInjector = (MetadataProviderInjector) builderImplementor.getBootstrapContext().getReflectionManager();
 
 		metadataProviderInjector.setMetadataProvider(new DynamicExtensionAwareMetadataProvider(builderImplementor.getBootstrapContext(), extensionService));

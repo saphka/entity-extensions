@@ -1,12 +1,10 @@
-package org.saphka.entity.extension;
+package org.saphka.entity.extension.test;
 
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.saphka.entity.extension.annotation.EnableDynamicExtensions;
 import org.saphka.entity.extension.service.DynamicExtensionService;
-import org.saphka.entity.extension.test.MyEntity;
-import org.saphka.entity.extension.test.MyEntityExtension;
-import org.saphka.entity.extension.test.MyEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
@@ -26,11 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase
 @AutoConfigureTestEntityManager
-@SpringBootTest(classes = {Application.class})
+@SpringBootTest(classes = {Application.class, SimpleExtensionTest.TestConfiguration.class})
 public class SimpleExtensionTest {
 
 	@Configuration
 	@EnableJpaRepositories(basePackages = {"org.saphka.entity.extension.test"})
+	@EnableDynamicExtensions
 	public static class TestConfiguration {
 	}
 

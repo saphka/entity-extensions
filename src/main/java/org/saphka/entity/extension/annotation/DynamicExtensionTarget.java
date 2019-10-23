@@ -2,9 +2,10 @@ package org.saphka.entity.extension.annotation;
 
 import java.lang.annotation.*;
 
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target(ElementType.TYPE)
+@Inherited
 public @interface DynamicExtensionTarget {
 
 	String tableName();

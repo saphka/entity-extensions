@@ -1,6 +1,7 @@
 package org.saphka.entity.extension.service;
 
 import groovy.lang.GroovyClassLoader;
+import org.saphka.entity.extension.annotation.DynamicExtensionTarget;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -48,9 +49,16 @@ public class DynamicExtensionServiceImpl implements DynamicExtensionService, Ini
 				.flatMap((classSource) -> classSource.getClassesSourceCode().stream())
 				.map(groovyClassLoader::parseClass)
 				.map((loadedClass) -> Pair.of(
-						loadedClass.getInterfaces()[0],
+						detectExtensionInterface(loadedClass),
 						loadedClass
 				))
 				.collect(Pair.toMap()));
+	}
+
+	private Class detectExtensionInterface(Class clazz) {
+		return Arrays.stream(clazz.getInterfaces())
+				.filter((intf) -> intf.isAnnotationPresent(DynamicExtensionTarget.class))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("Class " + clazz.getCanonicalName() + " must implement at least one interface marked with org.saphka.entity.extension.annotation.DynamicExtensionTarget"));
 	}
 }

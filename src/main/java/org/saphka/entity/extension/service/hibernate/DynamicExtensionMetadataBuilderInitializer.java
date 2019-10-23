@@ -11,7 +11,7 @@ import org.hibernate.boot.spi.MetadataBuilderInitializer;
 import org.hibernate.cfg.annotations.reflection.JPAMetadataProvider;
 import org.hibernate.engine.config.spi.ConfigurationService;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
-import org.saphka.entity.extension.service.DynamicExtensionService;
+import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
@@ -27,7 +27,7 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 	public void contribute(MetadataBuilder metadataBuilder, StandardServiceRegistry serviceRegistry) {
 		ConfigurationService configurationService = serviceRegistry.getService(ConfigurationService.class);
 
-		DynamicExtensionService extensionService = configurationService.getSetting(DynamicExtensionSettings.DYNAMIC_SERVICE, DynamicExtensionService.class, null);
+		DynamicExtensionClassService extensionService = configurationService.getSetting(DynamicExtensionSettings.DYNAMIC_SERVICE, DynamicExtensionClassService.class, null);
 		//Don't contribute if extension service is not configured
 		if (extensionService == null) {
 			return;
@@ -45,9 +45,9 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 	private static class DynamicExtensionAwareMetadataProvider extends JPAMetadataProvider {
 
 		private final Map<AnnotatedElement, AnnotationReader> cache = new HashMap<>(100);
-		private final DynamicExtensionService extensionService;
+		private final DynamicExtensionClassService extensionService;
 
-		DynamicExtensionAwareMetadataProvider(BootstrapContext bootstrapContext, DynamicExtensionService extensionService) {
+		DynamicExtensionAwareMetadataProvider(BootstrapContext bootstrapContext, DynamicExtensionClassService extensionService) {
 			super(bootstrapContext);
 			this.extensionService = extensionService;
 		}
@@ -82,10 +82,10 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 
 		private final AnnotatedElement annotatedElement;
 		private final Class returnClass;
-		private final DynamicExtensionService extensionService;
+		private final DynamicExtensionClassService extensionService;
 		private Target synthesizedAnnotation;
 
-		private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class returnClass, DynamicExtensionService extensionService) {
+		private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class returnClass, DynamicExtensionClassService extensionService) {
 			this.annotatedElement = annotatedElement;
 			this.returnClass = returnClass;
 			this.extensionService = extensionService;

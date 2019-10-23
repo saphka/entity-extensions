@@ -4,7 +4,7 @@ package org.saphka.entity.extension.test;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.saphka.entity.extension.annotation.EnableDynamicExtensions;
-import org.saphka.entity.extension.service.DynamicExtensionService;
+import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
@@ -34,7 +34,7 @@ public class SimpleExtensionTest {
 	}
 
 	@Autowired
-	private DynamicExtensionService extensionService;
+	private DynamicExtensionClassService extensionService;
 
 	@Autowired
 	private MyEntityRepository repository;

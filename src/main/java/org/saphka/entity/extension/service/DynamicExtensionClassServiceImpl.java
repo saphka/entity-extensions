@@ -8,13 +8,13 @@ import org.springframework.util.ClassUtils;
 
 import java.util.*;
 
-public class DynamicExtensionServiceImpl implements DynamicExtensionService, InitializingBean {
+public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassService, InitializingBean {
 
 	private final GroovyClassLoader groovyClassLoader = new GroovyClassLoader(ClassUtils.getDefaultClassLoader());
 	private final Map<Class, Class> extensions = new HashMap<>();
 	private final List<DynamicExtensionClassSource> classSources;
 
-	public DynamicExtensionServiceImpl(List<DynamicExtensionClassSource> classSources) {
+	public DynamicExtensionClassServiceImpl(List<DynamicExtensionClassSource> classSources) {
 		this.classSources = classSources;
 	}
 

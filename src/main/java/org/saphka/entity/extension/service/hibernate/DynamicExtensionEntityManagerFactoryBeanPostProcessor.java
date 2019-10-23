@@ -2,7 +2,7 @@ package org.saphka.entity.extension.service.hibernate;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
-import org.saphka.entity.extension.service.DynamicExtensionService;
+import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -12,10 +12,10 @@ import java.util.Properties;
 
 public class DynamicExtensionEntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
 
-	private final DynamicExtensionService dynamicExtensionService;
+	private final DynamicExtensionClassService dynamicExtensionClassService;
 
-	public DynamicExtensionEntityManagerFactoryBeanPostProcessor(DynamicExtensionService dynamicExtensionService) {
-		this.dynamicExtensionService = dynamicExtensionService;
+	public DynamicExtensionEntityManagerFactoryBeanPostProcessor(DynamicExtensionClassService dynamicExtensionClassService) {
+		this.dynamicExtensionClassService = dynamicExtensionClassService;
 	}
 
 	@Override
@@ -29,21 +29,21 @@ public class DynamicExtensionEntityManagerFactoryBeanPostProcessor implements Be
 	private void postProcess(LocalContainerEntityManagerFactoryBean bean) {
 		bean.getJpaPropertyMap().put(
 				AvailableSettings.CLASSLOADERS,
-				Collections.singletonList(dynamicExtensionService.getClassLoader())
+				Collections.singletonList(dynamicExtensionClassService.getClassLoader())
 		);
 
 		bean.setPersistenceUnitPostProcessors((mutableUnitInfo) -> {
 			Properties properties = mutableUnitInfo.getProperties();
 			properties.put(
 					AvailableSettings.LOADED_CLASSES,
-					dynamicExtensionService.getExtensionClasses()
+					dynamicExtensionClassService.getExtensionClasses()
 			);
 			properties.put(
 					DynamicExtensionSettings.DYNAMIC_SERVICE,
-					dynamicExtensionService
+					dynamicExtensionClassService
 			);
 
-			dynamicExtensionService.getExtensionClasses().stream().map(
+			dynamicExtensionClassService.getExtensionClasses().stream().map(
 					Class::getCanonicalName
 			).forEach(mutableUnitInfo::addManagedClassName);
 		});

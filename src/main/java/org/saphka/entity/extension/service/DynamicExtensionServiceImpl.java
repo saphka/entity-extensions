@@ -2,8 +2,10 @@ package org.saphka.entity.extension.service;
 
 import groovy.lang.GroovyClassLoader;
 import org.saphka.entity.extension.annotation.DynamicExtensionTarget;
+import org.saphka.entity.extension.configuration.DynamicExtensionAutoConfiguration;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -11,6 +13,7 @@ import org.springframework.util.ClassUtils;
 import java.util.*;
 
 @Component
+@ConditionalOnBean({DynamicExtensionAutoConfiguration.class})
 public class DynamicExtensionServiceImpl implements DynamicExtensionService, InitializingBean {
 
 	private final GroovyClassLoader groovyClassLoader = new GroovyClassLoader(ClassUtils.getDefaultClassLoader());

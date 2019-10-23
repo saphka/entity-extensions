@@ -13,13 +13,13 @@ import org.hibernate.engine.config.spi.ConfigurationService;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 import org.saphka.entity.extension.service.DynamicExtensionService;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuilderInitializer {
 
@@ -28,7 +28,10 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 		ConfigurationService configurationService = serviceRegistry.getService(ConfigurationService.class);
 
 		DynamicExtensionService extensionService = configurationService.getSetting(DynamicExtensionSettings.DYNAMIC_SERVICE, DynamicExtensionService.class, null);
-		Assert.notNull(extensionService, "Extension service cannot be null");
+		//Don't contribute if extension service is not configured
+		if (extensionService == null) {
+			return;
+		}
 
 		MetadataBuilderImplementor builderImplementor = (MetadataBuilderImplementor) metadataBuilder;
 

@@ -7,6 +7,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.util.ClassUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassService, InitializingBean {
 
@@ -48,7 +49,11 @@ public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassSe
 						detectExtensionInterface(loadedClass),
 						loadedClass
 				))
-				.collect(Pair.toMap()));
+				.collect(Collectors.toMap(
+						Pair::getFirst,
+						Pair::getSecond,
+						(o, n) -> n //new values always override
+				)));
 	}
 
 	private Class detectExtensionInterface(Class clazz) {

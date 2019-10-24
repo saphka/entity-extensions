@@ -2,6 +2,7 @@ package org.saphka.entity.extension.service.storage;
 
 import org.hibernate.dialect.*;
 import org.hibernate.sql.SimpleSelect;
+import org.hibernate.type.descriptor.java.UUIDTypeDescriptor;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(value = {CurrentConfigurationReader.class}, ignored = {CurrentConfigurationReaderImpl.class})
 public class CurrentConfigurationReaderImpl implements CurrentConfigurationReader {
 
-	private final static String[] EXTENSION_TABLE_COLUMNS = {"EXTENSION_ID", "TABLE_NAME", "FIELD_NAME", "FIELD_TYPE", "FIELD_LENGTH", "FIELD_FRACTION"};
+	private final static String[] EXTENSION_TABLE_COLUMNS = {"GUID", "EXTENSION_ID", "TABLE_NAME", "FIELD_NAME", "FIELD_TYPE", "FIELD_LENGTH", "FIELD_FRACTION"};
 
 	private final DataSource dataSource;
 	private final JpaProperties jpaProperties;
@@ -108,16 +109,17 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 
 			while (resultSet.next()) {
 				extIdToField
-						.computeIfAbsent(resultSet.getString(1), (k) -> new HashSet<>())
+						.computeIfAbsent(resultSet.getString(2), (k) -> new HashSet<>())
 						.add(new FieldDTO(
-								resultSet.getString(3),
+								UUIDTypeDescriptor.INSTANCE.wrap(resultSet.getObject(1), null),
 								resultSet.getString(4),
-								resultSet.getLong(5),
-								resultSet.getLong(6)
+								resultSet.getString(5),
+								resultSet.getLong(6),
+								resultSet.getLong(7)
 						));
 				extIdToTable.put(
-						resultSet.getString(1),
-						resultSet.getString(2)
+						resultSet.getString(2),
+						resultSet.getString(3)
 				);
 			}
 

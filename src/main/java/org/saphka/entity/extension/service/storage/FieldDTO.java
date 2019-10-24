@@ -3,14 +3,18 @@ package org.saphka.entity.extension.service.storage;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.UUID;
+
 public class FieldDTO {
 
+	private final UUID id;
 	private final String name;
 	private final String type;
 	private final Long length;
 	private final Long fraction;
 
-	public FieldDTO(String name, String type, Long length, Long fraction) {
+	public FieldDTO(UUID id, String name, String type, Long length, Long fraction) {
+		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.length = length;
@@ -46,6 +50,7 @@ public class FieldDTO {
 		}
 		FieldDTO rhs = (FieldDTO) obj;
 		return new EqualsBuilder()
+				.append(id, rhs.id)
 				.append(name, rhs.name)
 				.append(type, rhs.type)
 				.append(length, rhs.length)
@@ -56,10 +61,15 @@ public class FieldDTO {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.append(id)
 				.append(name)
 				.append(type)
 				.append(length)
 				.append(fraction)
 				.toHashCode();
+	}
+
+	public UUID getId() {
+		return id;
 	}
 }

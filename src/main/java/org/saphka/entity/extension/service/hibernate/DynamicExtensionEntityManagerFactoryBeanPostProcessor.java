@@ -4,16 +4,21 @@ import org.hibernate.cfg.AvailableSettings;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Properties;
 
+@Component
 public class DynamicExtensionEntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
 
 	private final DynamicExtensionClassService dynamicExtensionClassService;
 
+	@Autowired
 	public DynamicExtensionEntityManagerFactoryBeanPostProcessor(DynamicExtensionClassService dynamicExtensionClassService) {
 		this.dynamicExtensionClassService = dynamicExtensionClassService;
 	}

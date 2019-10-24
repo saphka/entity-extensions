@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+//@Component
 public class DynamicExtensionClassSourceTestImpl implements DynamicExtensionClassSource {
 
 	private final static String packageName = MyEntityExtension.class.getPackage().getName();

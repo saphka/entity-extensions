@@ -3,9 +3,12 @@ package org.saphka.entity.extension.service.storage;
 import org.hibernate.dialect.*;
 import org.hibernate.sql.SimpleSelect;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
 import javax.sql.DataSource;
@@ -16,6 +19,8 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
+@ConditionalOnMissingBean(value = {CurrentConfigurationReader.class}, ignored = {CurrentConfigurationReaderImpl.class})
 public class CurrentConfigurationReaderImpl implements CurrentConfigurationReader {
 
 	private final static String[] EXTENSION_TABLE_COLUMNS = {"EXTENSION_ID", "TABLE_NAME", "FIELD_NAME", "FIELD_TYPE", "FIELD_LENGTH", "FIELD_FRACTION"};
@@ -23,7 +28,7 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 	private final DataSource dataSource;
 	private final JpaProperties jpaProperties;
 
-
+	@Autowired
 	public CurrentConfigurationReaderImpl(DataSource dataSource, JpaProperties jpaProperties) {
 		this.dataSource = dataSource;
 		this.jpaProperties = jpaProperties;

@@ -3,18 +3,24 @@ package org.saphka.entity.extension.service;
 import groovy.lang.GroovyClassLoader;
 import org.saphka.entity.extension.annotation.DynamicExtensionTarget;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
+@ConditionalOnMissingBean(value = {DynamicExtensionClassService.class}, ignored = {DynamicExtensionClassServiceImpl.class})
 public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassService, InitializingBean {
 
 	private final GroovyClassLoader groovyClassLoader = new GroovyClassLoader(ClassUtils.getDefaultClassLoader());
 	private final Map<Class, Class> extensions = new HashMap<>();
 	private final List<DynamicExtensionClassSource> classSources;
 
+	@Autowired
 	public DynamicExtensionClassServiceImpl(List<DynamicExtensionClassSource> classSources) {
 		this.classSources = classSources;
 	}

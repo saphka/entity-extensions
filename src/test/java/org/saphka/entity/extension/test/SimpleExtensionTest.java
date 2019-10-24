@@ -1,20 +1,34 @@
 package org.saphka.entity.extension.test;
 
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.saphka.entity.extension.annotation.EnableDynamicExtensions;
 import org.saphka.entity.extension.service.DynamicExtensionClassService;
+import org.saphka.entity.extension.service.DynamicExtensionClassSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +44,34 @@ public class SimpleExtensionTest {
 	@Configuration
 	@EnableJpaRepositories(basePackages = {"org.saphka.entity.extension.test"})
 	@EnableDynamicExtensions(basePackages = {"org.saphka.entity.extension.test"})
+	@Order(Ordered.HIGHEST_PRECEDENCE + 10)
 	public static class TestConfiguration {
+
+		//trick to init table before class loading
+		@Bean
+		public DynamicExtensionClassSource getDataSource(DataSource dataSource) throws IOException {
+			Connection connection = null;
+			Statement statement = null;
+			try {
+				connection = dataSource.getConnection();
+
+				statement = connection.createStatement();
+
+				statement.executeUpdate(
+						IOUtils.toString(new ClassPathResource("test/schema-h2.sql").getInputStream(), Charset.defaultCharset())
+				);
+				statement.executeUpdate(
+						IOUtils.toString(new ClassPathResource("test/data-h2.sql").getInputStream(), Charset.defaultCharset())
+				);
+				connection.commit();
+			} catch (SQLException ignored) {
+			} finally {
+				JdbcUtils.closeStatement(statement);
+				JdbcUtils.closeConnection(connection);
+			}
+
+			return Collections::emptyList;
+		}
 	}
 
 	@Autowired
@@ -51,12 +92,20 @@ public class SimpleExtensionTest {
 		data.put("last", "Bar");
 
 		MyEntityExtension extension = (MyEntityExtension) aClass.getDeclaredConstructor(Map.class).newInstance(data);
+		MyEntityExtensionEmpty extensionEmpty = (MyEntityExtensionEmpty) extensionService.findExtensionByInterface(MyEntityExtensionEmpty.class).map(aClass1 -> {
+			try {
+				return aClass1.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}).orElseThrow(IllegalArgumentException::new);
 
 //		if (true) return;
 
 		MyEntity entity = new MyEntity();
 		entity.setId(1L);
 		entity.setExtension(extension);
+		entity.setEmpty(extensionEmpty);
 
 		repository.save(entity);
 

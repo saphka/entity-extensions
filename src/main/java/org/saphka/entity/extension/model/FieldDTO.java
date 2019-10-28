@@ -1,4 +1,4 @@
-package org.saphka.entity.extension.service.storage;
+package org.saphka.entity.extension.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -19,6 +19,10 @@ public class FieldDTO {
 		this.type = type;
 		this.length = length;
 		this.fraction = fraction;
+	}
+
+	public FieldDTO(Field field) {
+		this(field.getId(), field.getFieldName(), field.getFieldType(), field.getFieldLength(), field.getFieldFraction());
 	}
 
 	public String getName() {

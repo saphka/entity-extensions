@@ -1,4 +1,4 @@
-package org.saphka.entity.extension.service.storage;
+package org.saphka.entity.extension.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -17,6 +17,10 @@ public class ExtensionDTO {
 		this.extensionId = extensionId;
 		this.tableName = tableName;
 		this.fields = fields;
+	}
+
+	public ExtensionDTO(Extension extension, Set<FieldDTO> fields) {
+		this(extension.getExtensionId(), extension.getTableName(), fields);
 	}
 
 	public String getExtensionId() {

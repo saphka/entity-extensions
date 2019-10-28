@@ -4,6 +4,8 @@ import org.hibernate.dialect.*;
 import org.hibernate.sql.SimpleSelect;
 import org.hibernate.type.descriptor.java.UUIDTypeDescriptor;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
+import org.saphka.entity.extension.model.ExtensionDTO;
+import org.saphka.entity.extension.model.FieldDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;

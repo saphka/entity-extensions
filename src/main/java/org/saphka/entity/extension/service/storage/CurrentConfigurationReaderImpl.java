@@ -24,15 +24,18 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(value = {CurrentConfigurationReader.class}, ignored = {CurrentConfigurationReaderImpl.class})
 public class CurrentConfigurationReaderImpl implements CurrentConfigurationReader {
 
-	private final static String[] EXTENSION_TABLE_COLUMNS = {"GUID", "EXTENSION_ID", "TABLE_NAME", "FIELD_NAME", "FIELD_TYPE", "FIELD_LENGTH", "FIELD_FRACTION"};
+	private final static String[] EXTENSION_TABLE_COLUMNS = {"GUID", "EXTENSION_ID", "TABLE_NAME"};
+	private final static String[] FIELD_TABLE_COLUMNS = {"GUID", "EXTENSION_ID", "FIELD_NAME", "FIELD_TYPE", "FIELD_LENGTH", "FIELD_FRACTION"};
 
 	private final DataSource dataSource;
 	private final JpaProperties jpaProperties;
+	private final Dialect dialect;
 
 	@Autowired
 	public CurrentConfigurationReaderImpl(DataSource dataSource, JpaProperties jpaProperties) {
 		this.dataSource = dataSource;
 		this.jpaProperties = jpaProperties;
+		this.dialect = constructDialect();
 	}
 
 	private Class<?> determineDatabaseDialect(Database database) {
@@ -86,10 +89,21 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 
 	@Override
 	public List<ExtensionDTO> getCurrentExtensions() {
-		Dialect dialect = constructDialect();
+		Map<String, String> extIdToTable = getCurrentExtensionsFromDB();
+		Map<String, Set<FieldDTO>> extIdToField = getCurrentFieldsFromDB();
 
+		return extIdToTable.entrySet().stream()
+				.map((e) -> new ExtensionDTO(
+						e.getKey(),
+						e.getValue(),
+						extIdToField.getOrDefault(e.getKey(), Collections.emptySet())
+				))
+				.collect(Collectors.toList());
+	}
+
+	private Map<String, String> getCurrentExtensionsFromDB() {
 		SimpleSelect simpleSelect = new SimpleSelect(dialect);
-		simpleSelect.setTableName(DynamicExtensionSettings.TABLE_NAME);
+		simpleSelect.setTableName(DynamicExtensionSettings.EXT_TABLE_NAME);
 		for (String column : EXTENSION_TABLE_COLUMNS) {
 			simpleSelect.addColumn(column);
 		}
@@ -104,32 +118,16 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 
 			resultSet = statement.executeQuery(simpleSelect.toStatementString());
 
-			Map<String, String> extIdToTable = new HashMap<>();
-			Map<String, Set<FieldDTO>> extIdToField = new HashMap<>();
+			Map<String, String> result = new HashMap<>();
 
 			while (resultSet.next()) {
-				extIdToField
-						.computeIfAbsent(resultSet.getString(2), (k) -> new HashSet<>())
-						.add(new FieldDTO(
-								UUIDTypeDescriptor.INSTANCE.wrap(resultSet.getObject(1), null),
-								resultSet.getString(4),
-								resultSet.getString(5),
-								resultSet.getLong(6),
-								resultSet.getLong(7)
-						));
-				extIdToTable.put(
+				result.put(
 						resultSet.getString(2),
 						resultSet.getString(3)
 				);
 			}
 
-			return extIdToTable.entrySet().stream()
-					.map((e) -> new ExtensionDTO(
-							e.getKey(),
-							e.getValue(),
-							extIdToField.getOrDefault(e.getKey(), Collections.emptySet())
-					))
-					.collect(Collectors.toList());
+			return result;
 
 		} catch (SQLException ignored) {
 		} finally {
@@ -138,7 +136,51 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 			JdbcUtils.closeConnection(connection);
 		}
 
-		return Collections.emptyList();
+		return Collections.emptyMap();
+
+	}
+
+	private Map<String, Set<FieldDTO>> getCurrentFieldsFromDB() {
+		SimpleSelect simpleSelect = new SimpleSelect(dialect);
+		simpleSelect.setTableName(DynamicExtensionSettings.FIELD_TABLE_NAME);
+		for (String column : FIELD_TABLE_COLUMNS) {
+			simpleSelect.addColumn(column);
+		}
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = dataSource.getConnection();
+
+			statement = connection.createStatement();
+
+			resultSet = statement.executeQuery(simpleSelect.toStatementString());
+
+			Map<String, Set<FieldDTO>> result = new HashMap<>();
+
+			while (resultSet.next()) {
+				result
+						.computeIfAbsent(resultSet.getString(2), (k) -> new HashSet<>())
+						.add(new FieldDTO(
+								UUIDTypeDescriptor.INSTANCE.wrap(resultSet.getObject(1), null),
+								resultSet.getString(3),
+								resultSet.getString(4),
+								resultSet.getLong(5),
+								resultSet.getLong(6)
+						));
+
+			}
+
+			return result;
+		} catch (SQLException ignored) {
+		} finally {
+			JdbcUtils.closeResultSet(resultSet);
+			JdbcUtils.closeStatement(statement);
+			JdbcUtils.closeConnection(connection);
+		}
+
+		return Collections.emptyMap();
 
 	}
 }

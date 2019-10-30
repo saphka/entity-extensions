@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.saphka.entity.extension.annotation.DynamicExtensionTarget;
 import org.saphka.entity.extension.annotation.EnableDynamicExtensions;
 import org.saphka.entity.extension.model.ExtensionSimpleDTO;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -16,25 +17,26 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class KnowExtensionPointsProviderImpl implements KnowExtensionPointsProvider {
+public class KnowExtensionPointsProviderImpl implements KnowExtensionPointsProvider, InitializingBean {
 
 	private final ConfigurableApplicationContext applicationContext;
+	private final Map<String, ExtensionSimpleDTO> knownPoints = new HashMap<>();
 
 	@Autowired
 	public KnowExtensionPointsProviderImpl(ConfigurableApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
-
 	@Override
 	public Map<String, ExtensionSimpleDTO> getKnownExtensionPoints() {
+		return Collections.unmodifiableMap(knownPoints);
+	}
+
+	private Map<String, ExtensionSimpleDTO> initKnownPoints() {
 		ClassLoader classLoader = Objects.requireNonNull(ClassUtils.getDefaultClassLoader());
 
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false) {
@@ -78,5 +80,10 @@ public class KnowExtensionPointsProviderImpl implements KnowExtensionPointsProvi
 						ExtensionSimpleDTO::getExtensionId,
 						(e) -> e
 				));
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		knownPoints.putAll(initKnownPoints());
 	}
 }

@@ -58,7 +58,7 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 			sb.append("@Column(name=\"");
 			sb.append(field.getName());
 			sb.append("\")");
-			sb.append(field.getType()).append(" ");
+			sb.append(field.getType().getJavaType()).append(" ");
 			sb.append(CaseUtils.toCamelCase(field.getName(), false, '_')).append("\n");
 		});
 

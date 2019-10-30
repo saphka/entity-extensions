@@ -2,10 +2,7 @@ package org.saphka.entity.extension.model;
 
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -23,7 +20,8 @@ public class Field {
 	private String fieldName;
 
 	@Column(name = "FIELD_TYPE")
-	private String fieldType;
+	@Enumerated(EnumType.STRING)
+	private FieldType fieldType;
 
 	@Column(name = "FIELD_LENGTH")
 	private Long fieldLength;
@@ -55,11 +53,11 @@ public class Field {
 		this.fieldName = fieldName;
 	}
 
-	public String getFieldType() {
+	public FieldType getFieldType() {
 		return fieldType;
 	}
 
-	public void setFieldType(String fieldType) {
+	public void setFieldType(FieldType fieldType) {
 		this.fieldType = fieldType;
 	}
 

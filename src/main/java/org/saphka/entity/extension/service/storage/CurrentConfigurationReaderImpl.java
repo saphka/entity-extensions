@@ -6,6 +6,7 @@ import org.hibernate.type.descriptor.java.UUIDTypeDescriptor;
 import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 import org.saphka.entity.extension.model.ExtensionDTO;
 import org.saphka.entity.extension.model.FieldDTO;
+import org.saphka.entity.extension.model.FieldType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -167,7 +168,7 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 						.add(new FieldDTO(
 								UUIDTypeDescriptor.INSTANCE.wrap(resultSet.getObject(1), null),
 								resultSet.getString(3),
-								resultSet.getString(4),
+								FieldType.valueOf(resultSet.getString(4)),
 								resultSet.getLong(5),
 								resultSet.getLong(6)
 						));

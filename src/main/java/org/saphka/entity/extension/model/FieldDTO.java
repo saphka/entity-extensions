@@ -9,11 +9,11 @@ public class FieldDTO {
 
 	private final UUID id;
 	private final String name;
-	private final String type;
+	private final FieldType type;
 	private final Long length;
 	private final Long fraction;
 
-	public FieldDTO(UUID id, String name, String type, Long length, Long fraction) {
+	public FieldDTO(UUID id, String name, FieldType type, Long length, Long fraction) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -29,7 +29,7 @@ public class FieldDTO {
 		return name;
 	}
 
-	public String getType() {
+	public FieldType getType() {
 		return type;
 	}
 

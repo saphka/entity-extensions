@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SimpleExtensionTest {
 
 	@Configuration
-	@EnableJpaRepositories(basePackages = {"org.saphka.entity.extension.test"})
 	@EnableDynamicExtensions(basePackages = {"org.saphka.entity.extension.test"})
 	@Order(Ordered.HIGHEST_PRECEDENCE + 10)
 	public static class TestConfiguration {

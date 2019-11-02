@@ -1,10 +1,9 @@
-package org.saphka.entity.extension.test;
+package org.saphka.entity.test;
 
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.saphka.entity.extension.annotation.EnableDynamicExtensions;
 import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.saphka.entity.extension.service.DynamicExtensionClassSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -42,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SimpleExtensionTest {
 
 	@Configuration
-	@EnableDynamicExtensions(basePackages = {"org.saphka.entity.extension.test"})
 	@Order(Ordered.HIGHEST_PRECEDENCE + 10)
 	public static class TestConfiguration {
 

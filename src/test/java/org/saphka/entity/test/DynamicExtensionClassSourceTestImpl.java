@@ -1,7 +1,6 @@
-package org.saphka.entity.extension.test;
+package org.saphka.entity.test;
 
 import org.saphka.entity.extension.service.DynamicExtensionClassSource;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.saphka.entity.extension.test;
+package org.saphka.entity.test;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

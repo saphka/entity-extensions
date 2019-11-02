@@ -1,4 +1,4 @@
-package org.saphka.entity.extension.configuration;
+package org.saphka.entity.extension;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan(basePackages = {"org.saphka.entity.extension"})
-@EnableJpaRepositories(basePackages = {"org.saphka.entity.extension"})
-@EntityScan(basePackages = {"org.saphka.entity.extension"})
+@ComponentScan
+@EnableJpaRepositories
+@EntityScan
 public class DynamicExtensionAutoConfiguration {
 
 }

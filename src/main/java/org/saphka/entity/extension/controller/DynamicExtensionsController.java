@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "${entity.extension.controller.path}")
+@RequestMapping(path = "${entity.extension.controller.path:/parameters/entity/extensions}")
 public class DynamicExtensionsController {
 
 	private final ExtensionBusinessLogic businessLogic;

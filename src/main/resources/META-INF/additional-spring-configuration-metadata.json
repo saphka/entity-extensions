@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "entity.extension.controller.path",
+      "type": "java.lang.String",
+      "description": "REST Controller Path."
+    }
+  ]
+}

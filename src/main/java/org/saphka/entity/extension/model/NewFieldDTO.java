@@ -23,16 +23,16 @@ public class NewFieldDTO {
 	private final FieldType fieldType;
 	@NotNull
 	@Positive
-	private final Long fieldLength;
+	private final Integer fieldLength;
 	@PositiveOrZero
-	private final Long fieldFraction;
+	private final Integer fieldFraction;
 
 	@JsonCreator
 	public NewFieldDTO(@JsonProperty("extensionId") String extensionId,
 					   @JsonProperty("fieldName") String fieldName,
 					   @JsonProperty("fieldType") FieldType fieldType,
-					   @JsonProperty("fieldLength") Long fieldLength,
-					   @JsonProperty(value = "fieldFraction", defaultValue = "0") Long fieldFraction) {
+					   @JsonProperty("fieldLength") Integer fieldLength,
+					   @JsonProperty(value = "fieldFraction", defaultValue = "0") Integer fieldFraction) {
 		this.extensionId = extensionId;
 		this.fieldName = fieldName;
 		this.fieldType = fieldType;
@@ -84,11 +84,11 @@ public class NewFieldDTO {
 		return fieldType;
 	}
 
-	public Long getFieldLength() {
+	public Integer getFieldLength() {
 		return fieldLength;
 	}
 
-	public Long getFieldFraction() {
+	public Integer getFieldFraction() {
 		return fieldFraction;
 	}
 }

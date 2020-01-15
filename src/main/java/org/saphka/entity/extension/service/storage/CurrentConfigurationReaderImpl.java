@@ -169,8 +169,8 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 								UUIDTypeDescriptor.INSTANCE.wrap(resultSet.getObject(1), null),
 								resultSet.getString(3),
 								FieldType.valueOf(resultSet.getString(4)),
-								resultSet.getLong(5),
-								resultSet.getLong(6)
+								resultSet.getInt(5),
+								resultSet.getInt(6)
 						));
 
 			}

@@ -37,12 +37,12 @@ public class Field {
 	@Column(name = "FIELD_LENGTH")
 	@NotNull
 	@Positive
-	private Long fieldLength;
+	private Integer fieldLength;
 
 	@Column(name = "FIELD_FRACTION")
 	@NotNull
 	@PositiveOrZero
-	private Long fieldFraction;
+	private Integer fieldFraction;
 
 	public UUID getId() {
 		return id;
@@ -76,19 +76,19 @@ public class Field {
 		this.fieldType = fieldType;
 	}
 
-	public Long getFieldLength() {
+	public Integer getFieldLength() {
 		return fieldLength;
 	}
 
-	public void setFieldLength(Long fieldLength) {
+	public void setFieldLength(Integer fieldLength) {
 		this.fieldLength = fieldLength;
 	}
 
-	public Long getFieldFraction() {
+	public Integer getFieldFraction() {
 		return fieldFraction;
 	}
 
-	public void setFieldFraction(Long fieldFraction) {
+	public void setFieldFraction(Integer fieldFraction) {
 		this.fieldFraction = fieldFraction;
 	}
 }

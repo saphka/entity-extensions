@@ -23,16 +23,16 @@ public class FieldDTO {
 	private final FieldType type;
 	@NotNull
 	@Positive
-	private final Long length;
+	private final Integer length;
 	@PositiveOrZero
-	private final Long fraction;
+	private final Integer fraction;
 
 	@JsonCreator
 	public FieldDTO(@JsonProperty("id") UUID id,
 					@JsonProperty("name") String name,
 					@JsonProperty("type") FieldType type,
-					@JsonProperty("length") Long length,
-					@JsonProperty("fraction") Long fraction) {
+					@JsonProperty("length") Integer length,
+					@JsonProperty("fraction") Integer fraction) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -52,11 +52,11 @@ public class FieldDTO {
 		return type;
 	}
 
-	public Long getLength() {
+	public Integer getLength() {
 		return length;
 	}
 
-	public Long getFraction() {
+	public Integer getFraction() {
 		return fraction;
 	}
 

@@ -1,15 +1,24 @@
 package org.saphka.entity.extension.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ExtensionSimpleDTO {
 
+	@Size(min = 1, max = 200)
+	@NotNull
 	private final String extensionId;
+	@Size(min = 1, max = 100)
+	@NotNull
 	private final String tableName;
 
-
-	public ExtensionSimpleDTO(String extensionId, String tableName) {
+	@JsonCreator
+	public ExtensionSimpleDTO(@JsonProperty("extensionId") String extensionId, @JsonProperty("tableName") String tableName) {
 		this.extensionId = extensionId;
 		this.tableName = tableName;
 	}

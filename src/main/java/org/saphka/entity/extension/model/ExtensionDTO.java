@@ -1,19 +1,30 @@
 package org.saphka.entity.extension.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Set;
 
 public class ExtensionDTO {
 
+	@Size(min = 1, max = 200)
+	@NotNull
 	private final String extensionId;
+	@Size(min = 1, max = 100)
+	@NotNull
 	private final String tableName;
+	@NotNull
 	private final Set<FieldDTO> fields;
 
-
-	public ExtensionDTO(String extensionId, String tableName, Set<FieldDTO> fields) {
+	@JsonCreator
+	public ExtensionDTO(@JsonProperty("extensionId") String extensionId,
+						@JsonProperty("tableName") String tableName,
+						@JsonProperty("fields") Set<FieldDTO> fields) {
 		this.extensionId = extensionId;
 		this.tableName = tableName;
 		this.fields = fields;

@@ -1,19 +1,38 @@
 package org.saphka.entity.extension.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public class FieldDTO {
 
+	@NotNull
 	private final UUID id;
+	@Size(min = 1, max = 50)
+	@NotNull
 	private final String name;
+	@Size(min = 1, max = 50)
+	@NotNull
 	private final FieldType type;
+	@NotNull
+	@Positive
 	private final Long length;
+	@PositiveOrZero
 	private final Long fraction;
 
-	public FieldDTO(UUID id, String name, FieldType type, Long length, Long fraction) {
+	@JsonCreator
+	public FieldDTO(@JsonProperty("id") UUID id,
+					@JsonProperty("name") String name,
+					@JsonProperty("type") FieldType type,
+					@JsonProperty("length") Long length,
+					@JsonProperty("fraction") Long fraction) {
 		this.id = id;
 		this.name = name;
 		this.type = type;

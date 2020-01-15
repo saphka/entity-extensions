@@ -25,31 +25,31 @@ public class ExtensionBusinessLogicImpl implements ExtensionBusinessLogic {
 	}
 
 	@Override
-	public FieldDTO createExtension(String extensionId, String fieldName, FieldType fieldType, Long fieldLength, Long fieldFraction) {
-		if (fieldRepository.existsByExtensionIdAndFieldName(extensionId, fieldName)) {
-			throw new IllegalArgumentException("Fields with extension id " + extensionId + " and field name " + fieldName + " already exists");
+	public FieldDTO createExtension(NewFieldDTO fieldDTO) {
+		if (fieldRepository.existsByExtensionIdAndFieldName(fieldDTO.getExtensionId(), fieldDTO.getFieldName())) {
+			throw new IllegalArgumentException("Fields with extension id " + fieldDTO.getExtensionId() + " and field name " + fieldDTO.getFieldName() + " already exists");
 		}
 
-		if (!extensionRepository.existsByExtensionId(extensionId)) {
-			if (!knowExtensionPointsProvider.getKnownExtensionPoints().containsKey(extensionId)) {
-				throw new IllegalArgumentException("Unknown extension id " + extensionId);
+		if (!extensionRepository.existsByExtensionId(fieldDTO.getExtensionId())) {
+			if (!knowExtensionPointsProvider.getKnownExtensionPoints().containsKey(fieldDTO.getExtensionId())) {
+				throw new IllegalArgumentException("Unknown extension id " + fieldDTO.getExtensionId());
 			}
 
 			Extension extension = new Extension();
 			extension.setId(UUID.randomUUID());
-			extension.setExtensionId(extensionId);
-			extension.setTableName(knowExtensionPointsProvider.getKnownExtensionPoints().get(extensionId).getTableName());
+			extension.setExtensionId(fieldDTO.getExtensionId());
+			extension.setTableName(knowExtensionPointsProvider.getKnownExtensionPoints().get(fieldDTO.getExtensionId()).getTableName());
 
 			extensionRepository.save(extension);
 		}
 
 		Field field = new Field();
 		field.setId(UUID.randomUUID());
-		field.setExtensionId(extensionId);
-		field.setFieldName(fieldName);
-		field.setFieldType(fieldType);
-		field.setFieldLength(fieldLength);
-		field.setFieldFraction(fieldFraction);
+		field.setExtensionId(fieldDTO.getExtensionId());
+		field.setFieldName(fieldDTO.getExtensionId());
+		field.setFieldType(fieldDTO.getFieldType());
+		field.setFieldLength(fieldDTO.getFieldLength());
+		field.setFieldFraction(fieldDTO.getFieldFraction());
 
 		return new FieldDTO(fieldRepository.save(field));
 	}

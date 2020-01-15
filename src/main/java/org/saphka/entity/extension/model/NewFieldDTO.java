@@ -24,6 +24,7 @@ public class NewFieldDTO {
 	@NotNull
 	@Positive
 	private final Integer fieldLength;
+	@NotNull
 	@PositiveOrZero
 	private final Integer fieldFraction;
 

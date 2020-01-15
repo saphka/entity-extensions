@@ -1,12 +1,16 @@
 package org.saphka.entity.test;
 
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.saphka.entity.extension.liquibase.ExtensionCapableSpringLiquibase;
 import org.saphka.entity.extension.service.DynamicExtensionClassService;
 import org.saphka.entity.extension.service.DynamicExtensionClassSource;
+import org.saphka.entity.extension.service.storage.CurrentConfigurationReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,6 +71,16 @@ public class SimpleExtensionTest {
 			}
 
 			return Collections::emptyList;
+		}
+
+		@Bean
+		public SpringLiquibase liquibase(DataSource dataSource, @Value("${spring.liquibase.change-log}") String changeLog, CurrentConfigurationReader currentConfigurationReader) {
+			ExtensionCapableSpringLiquibase liquibase = new ExtensionCapableSpringLiquibase();
+			liquibase.setChangeLog(changeLog);
+			liquibase.setDataSource(dataSource);
+			liquibase.setExtensions(currentConfigurationReader.getCurrentExtensions());
+
+			return liquibase;
 		}
 	}
 

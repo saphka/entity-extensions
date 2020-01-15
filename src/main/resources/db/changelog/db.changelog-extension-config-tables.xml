@@ -1,0 +1,39 @@
+<databaseChangeLog
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet id="org.saphka.entity.extension-0001" author="LognovAS">
+		<createTable tableName="CONFIG_EXTENSION_POINT">
+			<column name="GUID" type="VARBINARY(16)">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="EXTENSION_ID" type="NVARCHAR(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="TABLE_NAME" type="NVARCHAR(100)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="CONFIG_EXTENSION_FIELD">
+			<column name="GUID" type="VARBINARY(16)">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="EXTENSION_ID" type="NVARCHAR(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="FIELD_NAME" type="NVARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="FIELD_TYPE" type="NVARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="FIELD_LENGTH" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="FIELD_FRACTION" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>

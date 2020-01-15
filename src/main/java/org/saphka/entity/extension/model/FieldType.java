@@ -2,6 +2,9 @@ package org.saphka.entity.extension.model;
 
 import java.math.BigDecimal;
 
+/**
+ * @author Alex Loginov
+ */
 public enum FieldType {
 
 	STRING(String.class, "java.sql.Types.NVARCHAR"),

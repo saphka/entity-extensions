@@ -11,6 +11,9 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
+/**
+ * @author Alex Loginov
+ */
 public class FieldDTO {
 
 	@NotNull

@@ -12,6 +12,9 @@ import org.springframework.util.ClassUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 @ConditionalOnMissingBean(value = {DynamicExtensionClassService.class}, ignored = {DynamicExtensionClassServiceImpl.class})
 public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassService, InitializingBean {

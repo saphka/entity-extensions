@@ -10,6 +10,9 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Alex Loginov
+ */
 public class NewFieldDTO {
 
 	@NotNull

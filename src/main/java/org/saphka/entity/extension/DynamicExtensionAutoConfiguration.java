@@ -13,6 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.sql.DataSource;
 
+/**
+ * @author Alex Loginov
+ */
 @Configuration
 @ComponentScan
 @EnableJpaRepositories

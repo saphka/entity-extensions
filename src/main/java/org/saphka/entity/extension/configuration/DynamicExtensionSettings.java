@@ -1,5 +1,8 @@
 package org.saphka.entity.extension.configuration;
 
+/**
+ * @author Alex Loginov
+ */
 public interface DynamicExtensionSettings {
 
 	String DYNAMIC_SERVICE = "ext.dynamic.service";

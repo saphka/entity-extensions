@@ -4,6 +4,11 @@ import org.saphka.entity.extension.model.ExtensionSimpleDTO;
 
 import java.util.Map;
 
+/**
+ * @author Alex Loginov
+ *
+ * Scans packages for all entities that have field interface marked with {@link org.saphka.entity.extension.annotation.DynamicExtensionTarget}
+ */
 public interface KnowExtensionPointsProvider {
 
 	Map<String, ExtensionSimpleDTO> getKnownExtensionPoints();

@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 public class ExtensionBusinessLogicImpl implements ExtensionBusinessLogic {
 

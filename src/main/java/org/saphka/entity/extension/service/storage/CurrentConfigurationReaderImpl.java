@@ -23,6 +23,9 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 @ConditionalOnMissingBean(value = {CurrentConfigurationReader.class}, ignored = {CurrentConfigurationReaderImpl.class})
 public class CurrentConfigurationReaderImpl implements CurrentConfigurationReader {

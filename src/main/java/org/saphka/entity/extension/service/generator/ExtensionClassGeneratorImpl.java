@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE - 10)
 @ConditionalOnMissingBean(value = {ExtensionClassGenerator.class}, ignored = {ExtensionClassGeneratorImpl.class})

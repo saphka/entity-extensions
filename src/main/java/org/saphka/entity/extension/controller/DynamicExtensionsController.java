@@ -13,6 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author Alex Loginov
+ */
 @RestController
 @RequestMapping(path = "${entity.extension.controller.path:/parameters/entity/extensions}")
 public class DynamicExtensionsController {

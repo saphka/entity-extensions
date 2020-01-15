@@ -21,6 +21,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Alex Loginov
+ */
 public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuilderInitializer {
 
 	@Override

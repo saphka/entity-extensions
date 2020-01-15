@@ -9,6 +9,9 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
+/**
+ * @author Alex Loginov
+ */
 @Entity
 @Table(name = DynamicExtensionSettings.FIELD_TABLE_NAME)
 public class Field {

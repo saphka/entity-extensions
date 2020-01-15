@@ -5,6 +5,9 @@ import org.hibernate.service.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Alex Loginov
+ */
 public interface DynamicExtensionClassService extends Service {
 
 	ClassLoader getClassLoader();

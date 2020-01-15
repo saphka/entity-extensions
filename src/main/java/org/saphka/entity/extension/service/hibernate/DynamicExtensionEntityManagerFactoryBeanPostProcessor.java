@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 public class DynamicExtensionEntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
 

@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * @author Alex Loginov
+ *
+ * Spirng Liquiibase compilant bean than can accept extensions as part of the change-set
+ */
+
 public class ExtensionCapableSpringLiquibase extends SpringLiquibase {
 
 	private final static String AUTHOR_NAME = ExtensionCapableSpringLiquibase.class.getCanonicalName();

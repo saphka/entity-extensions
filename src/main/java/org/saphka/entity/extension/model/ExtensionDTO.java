@@ -10,6 +10,9 @@ import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * @author Alex Loginov
+ */
 public class ExtensionDTO {
 
 	@Size(min = 1, max = 200)

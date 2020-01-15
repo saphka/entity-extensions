@@ -1,5 +1,7 @@
 package org.saphka.entity.extension.model;
 
+import org.apache.logging.log4j.util.Strings;
+
 import java.math.BigDecimal;
 
 /**
@@ -19,8 +21,22 @@ public enum FieldType {
 		this.sqlType = sqlType;
 	}
 
-	public String getJavaType() {
-		return javaType;
+	public String getJavaTypeWithConstraint(Integer length, Integer fraction) {
+		String annotation = Strings.EMPTY;
+		switch (this) {
+			case STRING:
+				annotation = "@javax.validation.constraints.Size(min = 1, max = " + length + ")";
+				break;
+			case NUMBER:
+				break;
+			case DECIMAL:
+				annotation = "@javax.validation.constraints.Digits(integer = " + (length - fraction) + ", fraction = " + fraction + ")";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown filed type " + this.name());
+		}
+
+		return annotation + " \n" + javaType;
 	}
 
 	public String getLiquibaseType(Integer length, Integer fraction) {

@@ -25,12 +25,12 @@ public enum FieldType {
 		String annotation = Strings.EMPTY;
 		switch (this) {
 			case STRING:
-				annotation = "@javax.validation.constraints.Size(min = 1, max = " + length + ")";
+				annotation = "@" + javax.validation.constraints.Size.class.getCanonicalName() + "(min = 1, max = " + length + ")";
 				break;
 			case NUMBER:
 				break;
 			case DECIMAL:
-				annotation = "@javax.validation.constraints.Digits(integer = " + (length - fraction) + ", fraction = " + fraction + ")";
+				annotation = "@" + javax.validation.constraints.Digits.class.getCanonicalName() + "(integer = " + (length - fraction) + ", fraction = " + fraction + ")";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown filed type " + this.name());

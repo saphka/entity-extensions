@@ -23,11 +23,9 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 
 	private final static String classNamePostfix = "Impl";
 	private final static String classHeader = "package " + ExtensionClassGeneratorImpl.class.getPackage().getName() + "\n" +
-			"import groovy.transform.MapConstructor\n" +
-			"import groovy.transform.Canonical\n" +
-			"import javax.persistence.Column\n" +
-			"@Canonical @MapConstructor " +
-			"@javax.persistence.Embeddable " +
+			"@" + groovy.transform.MapConstructor.class.getCanonicalName() + "\n" +
+			"@" + groovy.transform.Canonical.class.getCanonicalName() + "\n" +
+			"@" + javax.persistence.Embeddable.class.getCanonicalName() + "\n" +
 			"class ";
 
 	private final CurrentConfigurationReader currentConfigurationReader;
@@ -55,15 +53,22 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 		String[] parts = extensionDTO.getExtensionId().split("\\.");
 		String simpleName = parts[parts.length - 1];
 
-		sb.append(simpleName).append(classNamePostfix).append(" implements ").append(extensionDTO.getExtensionId());
-		sb.append("{\n");
-		extensionDTO.getFields().forEach((field) -> {
-			sb.append("@Column(name=\"");
-			sb.append(field.getName());
-			sb.append("\")");
-			sb.append(field.getType().getJavaTypeWithConstraint(field.getLength(), field.getFraction())).append(" ");
-			sb.append(CaseUtils.toCamelCase(field.getName(), false, '_')).append("\n");
-		});
+		sb.append(simpleName)
+				.append(classNamePostfix)
+				.append(" implements ")
+				.append(extensionDTO.getExtensionId())
+				.append("{\n");
+		extensionDTO.getFields().forEach((field) ->
+				sb.append("@")
+						.append(javax.persistence.Column.class.getCanonicalName())
+						.append("(name=\"")
+						.append(field.getName())
+						.append("\")")
+						.append(field.getType().getJavaTypeWithConstraint(field.getLength(), field.getFraction()))
+						.append(" ")
+						.append(CaseUtils.toCamelCase(field.getName(), false, '_'))
+						.append("\n")
+		);
 
 
 		sb.append("}");

@@ -1,6 +1,7 @@
 package org.saphka.entity.extension.bl;
 
 import org.saphka.entity.extension.model.ExtensionDTO;
+import org.saphka.entity.extension.model.FieldConfigDTO;
 import org.saphka.entity.extension.model.FieldDTO;
 import org.saphka.entity.extension.model.NewFieldDTO;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,6 @@ public interface ExtensionBusinessLogic {
 	 *
 	 * @return {@link List} of {@link org.saphka.entity.extension.model.FieldType} mapped to name
 	 */
-	List<String> getPossibleFieldTypes();
+	List<FieldConfigDTO> getPossibleFieldTypes();
 
 }

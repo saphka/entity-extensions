@@ -57,7 +57,7 @@ public class DynamicExtensionsController {
 	}
 
 	@GetMapping("/types")
-	public ResponseEntity<List<String>> getPossibleTypes() {
+	public ResponseEntity<List<FieldConfigDTO>> getPossibleTypes() {
 		return ResponseEntity.ok(businessLogic.getPossibleFieldTypes());
 	}
 

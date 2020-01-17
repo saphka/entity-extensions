@@ -95,8 +95,13 @@ public class ExtensionBusinessLogicImpl implements ExtensionBusinessLogic {
 	}
 
 	@Override
-	public List<String> getPossibleFieldTypes() {
-		return Arrays.stream(FieldType.values()).map(Enum::name).collect(Collectors.toList());
+	public List<FieldConfigDTO> getPossibleFieldTypes() {
+		return Arrays.stream(FieldType.values())
+				.map(type -> new FieldConfigDTO(
+						type,
+						type.getConfig()
+				))
+				.collect(Collectors.toList());
 	}
 
 }

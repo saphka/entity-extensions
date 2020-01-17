@@ -1,5 +1,7 @@
 package org.saphka.entity.extension.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.logging.log4j.util.Strings;
 
 import java.math.BigDecimal;
@@ -50,5 +52,38 @@ public enum FieldType {
 		}
 
 		throw new IllegalArgumentException("Unknown filed type " + this.name());
+	}
+
+	public FieldConfig getConfig() {
+		switch (this) {
+			case STRING:
+				return new FieldConfig(true, false);
+			case NUMBER:
+				return new FieldConfig(false, false);
+			case DECIMAL:
+				return new FieldConfig(true, true);
+		}
+
+		throw new IllegalArgumentException("Unknown filed type " + this.name());
+	}
+
+	public static class FieldConfig {
+		private final Boolean needsLength;
+		private final Boolean needsFraction;
+
+		@JsonCreator
+		public FieldConfig(@JsonProperty("needsLength") Boolean needsLength,
+						   @JsonProperty("needsFraction") Boolean needsFraction) {
+			this.needsLength = needsLength;
+			this.needsFraction = needsFraction;
+		}
+
+		public Boolean getNeedsLength() {
+			return needsLength;
+		}
+
+		public Boolean getNeedsFraction() {
+			return needsFraction;
+		}
 	}
 }

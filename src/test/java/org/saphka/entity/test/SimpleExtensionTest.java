@@ -103,6 +103,10 @@ public class SimpleExtensionTest {
 
 //		if (true) return;
 
+		assertThat(extension.getProperty("last")).isEqualTo("Bar");
+
+		extension.setProperty("last", "Baz");
+
 		MyEntity entity = new MyEntity();
 		entity.setId(1L);
 		entity.setExtension(extension);
@@ -119,7 +123,7 @@ public class SimpleExtensionTest {
 		assertThat(firstResult).isInstanceOf(Object[].class);
 
 		Object[] firstResultArray = (Object[]) firstResult;
-		assertThat(firstResultArray[0]).isEqualTo("Bar");
+		assertThat(firstResultArray[0]).isEqualTo("Baz");
 		assertThat(firstResultArray[1]).isEqualTo("Foo");
 
 	}

@@ -22,11 +22,12 @@ import java.util.stream.Collectors;
 public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 
 	private final static String classNamePostfix = "Impl";
-	private final static String classHeader = "package " + ExtensionClassGeneratorImpl.class.getPackage().getName() + "\n" +
-			"@" + groovy.transform.MapConstructor.class.getCanonicalName() + "\n" +
-			"@" + groovy.transform.Canonical.class.getCanonicalName() + "\n" +
-			"@" + javax.persistence.Embeddable.class.getCanonicalName() + "\n" +
-			"class ";
+	private final static String classHeader =
+			"package " + ExtensionClassGeneratorImpl.class.getPackage().getName() + "\n" +
+					"@" + groovy.transform.MapConstructor.class.getCanonicalName() + "\n" +
+					"@" + groovy.transform.Canonical.class.getCanonicalName() + "\n" +
+					"@" + javax.persistence.Embeddable.class.getCanonicalName() + "\n" +
+					"class ";
 
 	private final CurrentConfigurationReader currentConfigurationReader;
 	private final KnowExtensionPointsProvider knowExtensionPointsProvider;
@@ -70,11 +71,8 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 						.append("\n")
 		);
 
-
 		sb.append("}");
-
 		return sb.toString();
-
 	}
 
 	private Map<String, ExtensionDTO> findKnownExtensionPointNames() {

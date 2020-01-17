@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -25,7 +24,7 @@ public class FieldDTO {
 	@NotNull
 	private final FieldType type;
 	@NotNull
-	@Positive
+	@PositiveOrZero
 	private final Integer length;
 	@NotNull
 	@PositiveOrZero

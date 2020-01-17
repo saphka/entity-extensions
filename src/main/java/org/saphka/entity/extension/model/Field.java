@@ -4,7 +4,6 @@ import org.saphka.entity.extension.configuration.DynamicExtensionSettings;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class Field {
 
 	@Column(name = "FIELD_LENGTH")
 	@NotNull
-	@Positive
+	@PositiveOrZero
 	private Integer fieldLength;
 
 	@Column(name = "FIELD_FRACTION")

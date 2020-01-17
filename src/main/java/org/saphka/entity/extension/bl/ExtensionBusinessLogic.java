@@ -39,4 +39,11 @@ public interface ExtensionBusinessLogic {
 	 */
 	Optional<ExtensionDTO> getRegisteredExtension(String extensionId);
 
+	/**
+	 * List of types to use in API
+	 *
+	 * @return {@link List} of {@link org.saphka.entity.extension.model.FieldType} mapped to name
+	 */
+	List<String> getPossibleFieldTypes();
+
 }

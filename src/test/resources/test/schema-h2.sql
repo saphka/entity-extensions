@@ -2,7 +2,7 @@ create table CONFIG_EXTENSION_POINT
 (
     GUID         varbinary(16) primary key,
     EXTENSION_ID nvarchar(200) not null,
-    TABLE_NAME   nvarchar(100) not null,
+    TABLE_NAME   nvarchar(100) not null
 );
 create table CONFIG_EXTENSION_FIELD
 (
@@ -11,5 +11,5 @@ create table CONFIG_EXTENSION_FIELD
     FIELD_NAME     nvarchar(50)  not null,
     FIELD_TYPE     nvarchar(50)  not null,
     FIELD_LENGTH   int           not null,
-    FIELD_FRACTION int           not null,
+    FIELD_FRACTION int           not null
 );

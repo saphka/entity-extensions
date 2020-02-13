@@ -64,7 +64,8 @@ public class SimpleExtensionTest {
 						IOUtils.toString(new ClassPathResource("test/data-h2.sql").getInputStream(), Charset.defaultCharset())
 				);
 				connection.commit();
-			} catch (SQLException ignored) {
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Cannot insert data to config tables", e);
 			} finally {
 				JdbcUtils.closeStatement(statement);
 				JdbcUtils.closeConnection(connection);
@@ -129,8 +130,8 @@ public class SimpleExtensionTest {
 		MyEntityExtension myEntityExtensionSaveResult = myEntitySaveResult.getExtension();
 		Map<String, Object> propertiesMap = myEntityExtensionSaveResult.getPropertiesMap();
 
-		assertThat(propertiesMap).containsEntry("last","Baz");
-		assertThat(propertiesMap).containsEntry("first","Foo");
+		assertThat(propertiesMap).containsEntry("last", "Baz");
+		assertThat(propertiesMap).containsEntry("first", "Foo");
 
 	}
 

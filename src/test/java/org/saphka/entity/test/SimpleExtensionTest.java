@@ -112,7 +112,7 @@ public class SimpleExtensionTest {
 		entity.setExtension(extension);
 		entity.setEmpty(extensionEmpty);
 
-		repository.save(entity);
+		MyEntity myEntitySaveResult = repository.save(entity);
 
 		List select_last_from_my_entitty = entityManager.createNativeQuery(
 				"SELECT LAST, FIRST FROM PUBLIC.MY_ENTITY"
@@ -125,6 +125,12 @@ public class SimpleExtensionTest {
 		Object[] firstResultArray = (Object[]) firstResult;
 		assertThat(firstResultArray[0]).isEqualTo("Baz");
 		assertThat(firstResultArray[1]).isEqualTo("Foo");
+
+		MyEntityExtension myEntityExtensionSaveResult = myEntitySaveResult.getExtension();
+		Map<String, Object> propertiesMap = myEntityExtensionSaveResult.getPropertiesMap();
+
+		assertThat(propertiesMap).containsEntry("last","Baz");
+		assertThat(propertiesMap).containsEntry("first","Foo");
 
 	}
 

@@ -26,8 +26,17 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 			"package " + ExtensionClassGeneratorImpl.class.getPackage().getName() + "\n" +
 					"@" + groovy.transform.MapConstructor.class.getCanonicalName() + "\n" +
 					"@" + groovy.transform.Canonical.class.getCanonicalName() + "\n" +
+					"@" + groovy.transform.ToString.class.getCanonicalName() + "\n" +
+					"@" + groovy.transform.EqualsAndHashCode.class.getCanonicalName() + "\n" +
 					"@" + javax.persistence.Embeddable.class.getCanonicalName() + "\n" +
 					"class ";
+
+	private final static String getPropertiesMapMethod = "" +
+			"public java.util.Map getPropertiesMap() {\n" +
+			"  this.class.declaredFields.findAll { !it.synthetic }.collectEntries {\n" +
+			"    [ (it.name):this.\"$it.name\" ]\n" +
+			"  }\n" +
+			"}";
 
 	private final CurrentConfigurationReader currentConfigurationReader;
 	private final KnowExtensionPointsProvider knowExtensionPointsProvider;
@@ -70,6 +79,8 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 						.append(CaseUtils.toCamelCase(field.getName(), false, '_'))
 						.append("\n")
 		);
+
+		sb.append(getPropertiesMapMethod);
 
 		sb.append("}");
 		return sb.toString();

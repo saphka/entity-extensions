@@ -10,10 +10,10 @@ Build this library with maven and connect dependency to your project
 ```xml
 <dependencies>
     <dependency>
-		<groupId>org.saphka</groupId>
-		<artifactId>entity-extensions</artifactId>
+        <groupId>org.saphka</groupId>
+        <artifactId>entity-extensions</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-	</dependency>
+    </dependency>
 </dependencies>
 ``` 
 

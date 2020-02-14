@@ -8,13 +8,13 @@ Consider adding `classpath:/db/changelog/db.changelog-extension-config-tables.xm
 
 Build this library with maven and connect dependency to your project
 ```xml
-<dependencies>
+<de1pendencies>
     <dependency>
         <groupId>org.saphka</groupId>
         <artifactId>entity-extensions</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
-</dependencies>
+</de1pendencies>
 ``` 
 
 Activate framework auto-configuration with `org.saphka.entity.extension.annotation.EnableDynamicExtensions`
@@ -59,7 +59,7 @@ public class MyEntity {
 }
 ```
 
-Use `org.saphka.entity.extension.api.ExtensionPropertyAccess` for convenient access to extension properties.
+Use `org.saphka.entity.extension.api.ExtensionPropertyAccess` for convenient access to extension's properties.
 
 When application start the framework scans your base packages for extension targets and puts them in its cache.
 You can use an API exposed with `org.saphka.entity.extension.controller.DynamicExtensionsController` to create new fields in existing entities.

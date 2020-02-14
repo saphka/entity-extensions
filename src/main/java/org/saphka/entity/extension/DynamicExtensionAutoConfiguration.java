@@ -38,7 +38,9 @@ public class DynamicExtensionAutoConfiguration {
 		}
 
 		@Bean
-		public SpringLiquibase liquibase(DataSource dataSource, @Value("${spring.liquibase.change-log}") String changeLog, CurrentConfigurationReader currentConfigurationReader) {
+		public SpringLiquibase liquibase(DataSource dataSource,
+										 @Value("${spring.liquibase.change-log}") String changeLog,
+										 CurrentConfigurationReader currentConfigurationReader) {
 			ExtensionCapableSpringLiquibase liquibase = new ExtensionCapableSpringLiquibase();
 
 			liquibase.setChangeLog(this.properties.getChangeLog());

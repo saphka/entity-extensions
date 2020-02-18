@@ -11,7 +11,7 @@ import java.util.Optional;
 
 /**
  * @author Alex Loginov
- *
+ * <p>
  * Extension framework Business logic for API
  */
 
@@ -29,12 +29,14 @@ public interface ExtensionBusinessLogic {
 
 	/**
 	 * Get all registered extensions
+	 *
 	 * @return {@link List} of extensions with fields
 	 */
 	List<ExtensionDTO> getRegisteredExtensions();
 
 	/**
 	 * Get extension by id
+	 *
 	 * @param extensionId extension id
 	 * @return extension info with all fields
 	 */

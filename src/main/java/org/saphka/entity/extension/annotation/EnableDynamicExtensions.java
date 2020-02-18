@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 /**
  * @author Alex Loginov
- *
+ * <p>
  * Enables extension framework auto-configuration
  */
 

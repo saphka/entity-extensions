@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author Alex Loginov
- *
+ * <p>
  * Read current configuration from Database
  */
 public interface CurrentConfigurationReader {

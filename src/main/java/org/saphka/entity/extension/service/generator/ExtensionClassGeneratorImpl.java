@@ -1,8 +1,8 @@
 package org.saphka.entity.extension.service.generator;
 
 import org.apache.commons.text.CaseUtils;
-import org.saphka.entity.extension.service.storage.CurrentConfigurationReader;
 import org.saphka.entity.extension.model.ExtensionDTO;
+import org.saphka.entity.extension.service.storage.CurrentConfigurationReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.Ordered;
@@ -10,7 +10,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

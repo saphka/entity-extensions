@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 /**
  * @author Alex Loginov
- *
+ * <p>
  * Spirng Liquiibase compilant bean than can accept extensions as part of the change-set
  */
 

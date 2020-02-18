@@ -74,7 +74,7 @@ public class CurrentConfigurationReaderImpl implements CurrentConfigurationReade
 	}
 
 	private Dialect constructDialect() {
-		Class databaseDialectClass;
+		Class<?> databaseDialectClass;
 
 		if (jpaProperties.getDatabasePlatform() != null) {
 			try {

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassService, InitializingBean {
 
 	private final GroovyClassLoader groovyClassLoader = new GroovyClassLoader(ClassUtils.getDefaultClassLoader());
-	private final Map<Class, Class> extensions = new HashMap<>();
+	private final Map<Class<?>, Class<?>> extensions = new HashMap<>();
 	private final List<DynamicExtensionClassSource> classSources;
 
 	@Autowired
@@ -34,12 +34,12 @@ public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassSe
 	}
 
 	@Override
-	public List<Class> getExtensionClasses() {
+	public List<Class<?>> getExtensionClasses() {
 		return new ArrayList<>(extensions.values());
 	}
 
 	@Override
-	public Optional<Class> findExtensionByInterface(Class<?> target) {
+	public Optional<Class<?>> findExtensionByInterface(Class<?> target) {
 		return Optional.ofNullable(extensions.get(target));
 	}
 
@@ -49,11 +49,19 @@ public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassSe
 	}
 
 	@Override
+	public <T> Optional<T> createExtensionClassByInterface(Class<T> target, Map<String, Object> properties) {
+//		Optional<Class<?>> concreteClass = findExtensionByInterface(target);
+
+		return Optional.empty();
+	}
+
+	@Override
 	public void afterPropertiesSet() {
 		extensions.putAll(classSources
 				.stream()
 				.flatMap((classSource) -> classSource.getClassesSourceCode().stream())
 				.map(groovyClassLoader::parseClass)
+				.map((c) -> ((Class<?>) c))
 				.map((loadedClass) -> Pair.of(
 						detectExtensionInterface(loadedClass),
 						loadedClass
@@ -65,7 +73,7 @@ public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassSe
 				)));
 	}
 
-	private Class detectExtensionInterface(Class clazz) {
+	private Class<?> detectExtensionInterface(Class<?> clazz) {
 		return Arrays.stream(clazz.getInterfaces())
 				.filter((intf) -> intf.isAnnotationPresent(DynamicExtensionTarget.class))
 				.findFirst()

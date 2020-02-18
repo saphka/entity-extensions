@@ -57,7 +57,7 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 
 		@Override
 		public AnnotationReader getAnnotationReader(AnnotatedElement annotatedElement) {
-			Class returnClass = checkHasExtension(annotatedElement);
+			Class<?> returnClass = checkHasExtension(annotatedElement);
 			if (returnClass != null) {
 				return cache.computeIfAbsent(annotatedElement, (e) -> new DynamicExtensionAnnotationReader(e, returnClass, extensionService));
 			} else {
@@ -65,8 +65,8 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 			}
 		}
 
-		private Class checkHasExtension(AnnotatedElement annotatedElement) {
-			Class returnClass;
+		private Class<?> checkHasExtension(AnnotatedElement annotatedElement) {
+			Class<?> returnClass;
 			if (annotatedElement instanceof Field) {
 				Field field = (Field) annotatedElement;
 				returnClass = field.getType();
@@ -84,11 +84,11 @@ public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuild
 	private static class DynamicExtensionAnnotationReader implements AnnotationReader {
 
 		private final AnnotatedElement annotatedElement;
-		private final Class returnClass;
+		private final Class<?> returnClass;
 		private final DynamicExtensionClassService extensionService;
 		private Target synthesizedAnnotation;
 
-		private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class returnClass, DynamicExtensionClassService extensionService) {
+		private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class<?> returnClass, DynamicExtensionClassService extensionService) {
 			this.annotatedElement = annotatedElement;
 			this.returnClass = returnClass;
 			this.extensionService = extensionService;

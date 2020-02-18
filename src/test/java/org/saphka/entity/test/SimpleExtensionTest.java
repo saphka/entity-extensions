@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -86,21 +87,16 @@ public class SimpleExtensionTest {
 	private EntityManager entityManager;
 
 	@Test
-	public void entityCreateTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-		Class<?> aClass = extensionService.findExtensionByInterface(MyEntityExtension.class).orElseThrow(() -> new IllegalArgumentException(""));
-
+	public void entityCreateTest() {
 		HashMap<String, Object> data = new HashMap<>();
 		data.put("first", "Foo");
 		data.put("last", "Bar");
+		data.put("age", "11");
+		data.put("bad", "property");
 
-		MyEntityExtension extension = (MyEntityExtension) aClass.getDeclaredConstructor(Map.class).newInstance(data);
-		MyEntityExtensionEmpty extensionEmpty = (MyEntityExtensionEmpty) extensionService.findExtensionByInterface(MyEntityExtensionEmpty.class).map(aClass1 -> {
-			try {
-				return aClass1.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}).orElseThrow(IllegalArgumentException::new);
+		MyEntityExtension extension = extensionService.createExtensionClassByInterface(MyEntityExtension.class, data).orElseThrow(IllegalArgumentException::new);
+
+		MyEntityExtensionEmpty extensionEmpty = extensionService.createExtensionClassByInterface(MyEntityExtensionEmpty.class, Collections.emptyMap()).orElseThrow(IllegalArgumentException::new);
 
 //		if (true) return;
 
@@ -115,8 +111,8 @@ public class SimpleExtensionTest {
 
 		MyEntity myEntitySaveResult = repository.save(entity);
 
-		List select_last_from_my_entitty = entityManager.createNativeQuery(
-				"SELECT LAST, FIRST FROM PUBLIC.MY_ENTITY"
+		List<Object[]> select_last_from_my_entitty = entityManager.createNativeQuery(
+				"SELECT LAST, FIRST, AGE FROM PUBLIC.MY_ENTITY"
 		).getResultList();
 		assertThat(select_last_from_my_entitty).hasSize(1);
 
@@ -126,6 +122,7 @@ public class SimpleExtensionTest {
 		Object[] firstResultArray = (Object[]) firstResult;
 		assertThat(firstResultArray[0]).isEqualTo("Baz");
 		assertThat(firstResultArray[1]).isEqualTo("Foo");
+		assertThat(firstResultArray[2]).isEqualTo(new BigInteger("11"));
 
 		MyEntityExtension myEntityExtensionSaveResult = myEntitySaveResult.getExtension();
 		Map<String, Object> propertiesMap = myEntityExtensionSaveResult.getPropertiesMap();

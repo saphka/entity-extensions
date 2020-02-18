@@ -28,6 +28,7 @@ public class ExtensionClassGeneratorImpl implements ExtensionClassGenerator {
 					"@" + groovy.transform.Canonical.class.getCanonicalName() + "\n" +
 					"@" + groovy.transform.ToString.class.getCanonicalName() + "\n" +
 					"@" + groovy.transform.EqualsAndHashCode.class.getCanonicalName() + "\n" +
+					"@" + com.fasterxml.jackson.annotation.JsonIgnoreProperties.class.getCanonicalName() + "(ignoreUnknown=true)\n" +
 					"@" + javax.persistence.Embeddable.class.getCanonicalName() + "\n" +
 					"class ";
 

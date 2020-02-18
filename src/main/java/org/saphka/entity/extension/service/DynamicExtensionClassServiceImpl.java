@@ -1,5 +1,6 @@
 package org.saphka.entity.extension.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.lang.GroovyClassLoader;
 import org.saphka.entity.extension.annotation.DynamicExtensionTarget;
 import org.springframework.beans.factory.InitializingBean;
@@ -50,9 +51,12 @@ public class DynamicExtensionClassServiceImpl implements DynamicExtensionClassSe
 
 	@Override
 	public <T> Optional<T> createExtensionClassByInterface(Class<T> target, Map<String, Object> properties) {
-//		Optional<Class<?>> concreteClass = findExtensionByInterface(target);
+		Optional<Class<?>> concreteClass = findExtensionByInterface(target);
 
-		return Optional.empty();
+		//noinspection unchecked
+		return concreteClass
+				.map((c) -> new ObjectMapper().convertValue(properties, c))
+				.map((obj) -> (T) obj);
 	}
 
 	@Override

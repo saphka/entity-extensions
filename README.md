@@ -66,6 +66,8 @@ You can use an API exposed with `org.saphka.entity.extension.controller.DynamicE
 
 Framework does not support extension modifications so be careful.
 
+Easy-to-use extension objects creation is available with `org.saphka.entity.extension.service.DynamicExtensionClassService`
+
 ## Authors
 
 * **Alexander Loginov** - *Initial work* - [saphka](https://github.com/saphka)

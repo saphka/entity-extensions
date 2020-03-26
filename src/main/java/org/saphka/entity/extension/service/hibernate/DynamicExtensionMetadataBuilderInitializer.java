@@ -26,109 +26,109 @@ import java.util.Map;
  */
 public class DynamicExtensionMetadataBuilderInitializer implements MetadataBuilderInitializer {
 
-	@Override
-	public void contribute(MetadataBuilder metadataBuilder, StandardServiceRegistry serviceRegistry) {
-		ConfigurationService configurationService = serviceRegistry.getService(ConfigurationService.class);
+    @Override
+    public void contribute(MetadataBuilder metadataBuilder, StandardServiceRegistry serviceRegistry) {
+        ConfigurationService configurationService = serviceRegistry.getService(ConfigurationService.class);
 
-		DynamicExtensionClassService extensionService = configurationService.getSetting(DynamicExtensionSettings.DYNAMIC_SERVICE, DynamicExtensionClassService.class, null);
-		//Don't contribute if extension service is not configured
-		if (extensionService == null) {
-			return;
-		}
+        DynamicExtensionClassService extensionService = configurationService.getSetting(DynamicExtensionSettings.DYNAMIC_SERVICE, DynamicExtensionClassService.class, null);
+        //Don't contribute if extension service is not configured
+        if (extensionService == null) {
+            return;
+        }
 
-		MetadataBuilderImplementor builderImplementor = (MetadataBuilderImplementor) metadataBuilder;
+        MetadataBuilderImplementor builderImplementor = (MetadataBuilderImplementor) metadataBuilder;
 
-		@SuppressWarnings("deprecation")
-		MetadataProviderInjector metadataProviderInjector = (MetadataProviderInjector) builderImplementor.getBootstrapContext().getReflectionManager();
+        @SuppressWarnings("deprecation")
+        MetadataProviderInjector metadataProviderInjector = (MetadataProviderInjector) builderImplementor.getBootstrapContext().getReflectionManager();
 
-		metadataProviderInjector.setMetadataProvider(new DynamicExtensionAwareMetadataProvider(builderImplementor.getBootstrapContext(), extensionService));
+        metadataProviderInjector.setMetadataProvider(new DynamicExtensionAwareMetadataProvider(builderImplementor.getBootstrapContext(), extensionService));
 
-	}
+    }
 
-	private static class DynamicExtensionAwareMetadataProvider extends JPAMetadataProvider {
+    private static class DynamicExtensionAwareMetadataProvider extends JPAMetadataProvider {
 
-		private final Map<AnnotatedElement, AnnotationReader> cache = new HashMap<>(100);
-		private final DynamicExtensionClassService extensionService;
+        private final Map<AnnotatedElement, AnnotationReader> cache = new HashMap<>(100);
+        private final DynamicExtensionClassService extensionService;
 
-		DynamicExtensionAwareMetadataProvider(BootstrapContext bootstrapContext, DynamicExtensionClassService extensionService) {
-			super(bootstrapContext);
-			this.extensionService = extensionService;
-		}
+        DynamicExtensionAwareMetadataProvider(BootstrapContext bootstrapContext, DynamicExtensionClassService extensionService) {
+            super(bootstrapContext);
+            this.extensionService = extensionService;
+        }
 
-		@Override
-		public AnnotationReader getAnnotationReader(AnnotatedElement annotatedElement) {
-			Class<?> returnClass = checkHasExtension(annotatedElement);
-			if (returnClass != null) {
-				return cache.computeIfAbsent(annotatedElement, (e) -> new DynamicExtensionAnnotationReader(e, returnClass, extensionService));
-			} else {
-				return super.getAnnotationReader(annotatedElement);
-			}
-		}
+        @Override
+        public AnnotationReader getAnnotationReader(AnnotatedElement annotatedElement) {
+            Class<?> returnClass = checkHasExtension(annotatedElement);
+            if (returnClass != null) {
+                return cache.computeIfAbsent(annotatedElement, (e) -> new DynamicExtensionAnnotationReader(e, returnClass, extensionService));
+            } else {
+                return super.getAnnotationReader(annotatedElement);
+            }
+        }
 
-		private Class<?> checkHasExtension(AnnotatedElement annotatedElement) {
-			Class<?> returnClass;
-			if (annotatedElement instanceof Field) {
-				Field field = (Field) annotatedElement;
-				returnClass = field.getType();
-			} else if (annotatedElement instanceof Method) {
-				Method method = (Method) annotatedElement;
-				returnClass = method.getReturnType();
-			} else {
-				return null;
-			}
+        private Class<?> checkHasExtension(AnnotatedElement annotatedElement) {
+            Class<?> returnClass;
+            if (annotatedElement instanceof Field) {
+                Field field = (Field) annotatedElement;
+                returnClass = field.getType();
+            } else if (annotatedElement instanceof Method) {
+                Method method = (Method) annotatedElement;
+                returnClass = method.getReturnType();
+            } else {
+                return null;
+            }
 
-			return extensionService.hasExtension(returnClass) ? returnClass : null;
-		}
-	}
+            return extensionService.hasExtension(returnClass) ? returnClass : null;
+        }
+    }
 
-	private static class DynamicExtensionAnnotationReader implements AnnotationReader {
+    private static class DynamicExtensionAnnotationReader implements AnnotationReader {
 
-		private final AnnotatedElement annotatedElement;
-		private final Class<?> returnClass;
-		private final DynamicExtensionClassService extensionService;
-		private Target synthesizedAnnotation;
+        private final AnnotatedElement annotatedElement;
+        private final Class<?> returnClass;
+        private final DynamicExtensionClassService extensionService;
+        private Target synthesizedAnnotation;
 
-		private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class<?> returnClass, DynamicExtensionClassService extensionService) {
-			this.annotatedElement = annotatedElement;
-			this.returnClass = returnClass;
-			this.extensionService = extensionService;
-		}
+        private DynamicExtensionAnnotationReader(AnnotatedElement annotatedElement, Class<?> returnClass, DynamicExtensionClassService extensionService) {
+            this.annotatedElement = annotatedElement;
+            this.returnClass = returnClass;
+            this.extensionService = extensionService;
+        }
 
-		@Override
-		public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-			if (Target.class.equals(annotationType)) {
-				return annotationType.cast(createTargetAnnotation());
-			}
+        @Override
+        public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+            if (Target.class.equals(annotationType)) {
+                return annotationType.cast(createTargetAnnotation());
+            }
 
-			return annotatedElement.getAnnotation(annotationType);
-		}
+            return annotatedElement.getAnnotation(annotationType);
+        }
 
-		@Override
-		public <T extends Annotation> boolean isAnnotationPresent(Class<T> annotationType) {
-			if (Target.class.equals(annotationType)) {
-				return true;
-			}
-			return annotatedElement.isAnnotationPresent(annotationType);
-		}
+        @Override
+        public <T extends Annotation> boolean isAnnotationPresent(Class<T> annotationType) {
+            if (Target.class.equals(annotationType)) {
+                return true;
+            }
+            return annotatedElement.isAnnotationPresent(annotationType);
+        }
 
-		@Override
-		public Annotation[] getAnnotations() {
-			Annotation[] initialAnnotations = annotatedElement.getAnnotations();
-			Annotation[] annotations = new Annotation[initialAnnotations.length + 1];
-			System.arraycopy(initialAnnotations, 0, annotations, 0, initialAnnotations.length);
-			annotations[annotations.length - 1] = createTargetAnnotation();
+        @Override
+        public Annotation[] getAnnotations() {
+            Annotation[] initialAnnotations = annotatedElement.getAnnotations();
+            Annotation[] annotations = new Annotation[initialAnnotations.length + 1];
+            System.arraycopy(initialAnnotations, 0, annotations, 0, initialAnnotations.length);
+            annotations[annotations.length - 1] = createTargetAnnotation();
 
-			return annotations;
-		}
+            return annotations;
+        }
 
-		private synchronized Target createTargetAnnotation() {
-			if (synthesizedAnnotation == null) {
-				Map<String, Object> attributes = new HashMap<>();
-				attributes.put("value", extensionService.findExtensionByInterface(returnClass).orElseThrow(() -> new IllegalArgumentException("No extension found for class " + returnClass.getCanonicalName())));
-				synthesizedAnnotation = AnnotationUtils.synthesizeAnnotation(attributes, Target.class, annotatedElement);
-			}
+        private synchronized Target createTargetAnnotation() {
+            if (synthesizedAnnotation == null) {
+                Map<String, Object> attributes = new HashMap<>();
+                attributes.put("value", extensionService.findExtensionByInterface(returnClass).orElseThrow(() -> new IllegalArgumentException("No extension found for class " + returnClass.getCanonicalName())));
+                synthesizedAnnotation = AnnotationUtils.synthesizeAnnotation(attributes, Target.class, annotatedElement);
+            }
 
-			return synthesizedAnnotation;
-		}
-	}
+            return synthesizedAnnotation;
+        }
+    }
 }

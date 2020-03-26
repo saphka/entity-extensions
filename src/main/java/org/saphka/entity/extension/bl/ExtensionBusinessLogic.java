@@ -17,36 +17,36 @@ import java.util.Optional;
 
 public interface ExtensionBusinessLogic {
 
-	/**
-	 * Create new extension field.
-	 * Client should restart the application for changes to take effect
-	 *
-	 * @param fieldDTO field data
-	 * @return created field
-	 */
-	@Transactional
-	FieldDTO createExtension(NewFieldDTO fieldDTO);
+    /**
+     * Create new extension field.
+     * Client should restart the application for changes to take effect
+     *
+     * @param fieldDTO field data
+     * @return created field
+     */
+    @Transactional
+    FieldDTO createExtension(NewFieldDTO fieldDTO);
 
-	/**
-	 * Get all registered extensions
-	 *
-	 * @return {@link List} of extensions with fields
-	 */
-	List<ExtensionDTO> getRegisteredExtensions();
+    /**
+     * Get all registered extensions
+     *
+     * @return {@link List} of extensions with fields
+     */
+    List<ExtensionDTO> getRegisteredExtensions();
 
-	/**
-	 * Get extension by id
-	 *
-	 * @param extensionId extension id
-	 * @return extension info with all fields
-	 */
-	Optional<ExtensionDTO> getRegisteredExtension(String extensionId);
+    /**
+     * Get extension by id
+     *
+     * @param extensionId extension id
+     * @return extension info with all fields
+     */
+    Optional<ExtensionDTO> getRegisteredExtension(String extensionId);
 
-	/**
-	 * List of types to use in API
-	 *
-	 * @return {@link List} of {@link org.saphka.entity.extension.model.FieldType} mapped to name
-	 */
-	List<FieldConfigDTO> getPossibleFieldTypes();
+    /**
+     * List of types to use in API
+     *
+     * @return {@link List} of {@link org.saphka.entity.extension.model.FieldType} mapped to name
+     */
+    List<FieldConfigDTO> getPossibleFieldTypes();
 
 }

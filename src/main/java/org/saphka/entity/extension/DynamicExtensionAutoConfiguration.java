@@ -25,44 +25,44 @@ import javax.sql.DataSource;
 @EntityScan
 public class DynamicExtensionAutoConfiguration {
 
-	@Configuration
-	@EnableConfigurationProperties(LiquibaseProperties.class)
-	@ConditionalOnProperty(prefix = "entity.extension.liquibase", name = "enabled", havingValue = "true", matchIfMissing = true)
-	public static class DynamicExtensionLiquibaseConfiguration {
+    @Configuration
+    @EnableConfigurationProperties(LiquibaseProperties.class)
+    @ConditionalOnProperty(prefix = "entity.extension.liquibase", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public static class DynamicExtensionLiquibaseConfiguration {
 
-		private final LiquibaseProperties properties;
+        private final LiquibaseProperties properties;
 
-		@Autowired
-		public DynamicExtensionLiquibaseConfiguration(LiquibaseProperties properties) {
-			this.properties = properties;
-		}
+        @Autowired
+        public DynamicExtensionLiquibaseConfiguration(LiquibaseProperties properties) {
+            this.properties = properties;
+        }
 
-		@Bean
-		public SpringLiquibase liquibase(DataSource dataSource,
-										 @Value("${spring.liquibase.change-log}") String changeLog,
-										 CurrentConfigurationReader currentConfigurationReader) {
-			ExtensionCapableSpringLiquibase liquibase = new ExtensionCapableSpringLiquibase();
+        @Bean
+        public SpringLiquibase liquibase(DataSource dataSource,
+                                         @Value("${spring.liquibase.change-log}") String changeLog,
+                                         CurrentConfigurationReader currentConfigurationReader) {
+            ExtensionCapableSpringLiquibase liquibase = new ExtensionCapableSpringLiquibase();
 
-			liquibase.setChangeLog(this.properties.getChangeLog());
-			liquibase.setContexts(this.properties.getContexts());
-			liquibase.setDefaultSchema(this.properties.getDefaultSchema());
-			liquibase.setLiquibaseSchema(this.properties.getLiquibaseSchema());
-			liquibase.setLiquibaseTablespace(this.properties.getLiquibaseTablespace());
-			liquibase.setDatabaseChangeLogTable(this.properties.getDatabaseChangeLogTable());
-			liquibase.setDatabaseChangeLogLockTable(this.properties.getDatabaseChangeLogLockTable());
-			liquibase.setDropFirst(this.properties.isDropFirst());
-			liquibase.setShouldRun(this.properties.isEnabled());
-			liquibase.setLabels(this.properties.getLabels());
-			liquibase.setChangeLogParameters(this.properties.getParameters());
-			liquibase.setRollbackFile(this.properties.getRollbackFile());
-			liquibase.setTestRollbackOnUpdate(this.properties.isTestRollbackOnUpdate());
+            liquibase.setChangeLog(this.properties.getChangeLog());
+            liquibase.setContexts(this.properties.getContexts());
+            liquibase.setDefaultSchema(this.properties.getDefaultSchema());
+            liquibase.setLiquibaseSchema(this.properties.getLiquibaseSchema());
+            liquibase.setLiquibaseTablespace(this.properties.getLiquibaseTablespace());
+            liquibase.setDatabaseChangeLogTable(this.properties.getDatabaseChangeLogTable());
+            liquibase.setDatabaseChangeLogLockTable(this.properties.getDatabaseChangeLogLockTable());
+            liquibase.setDropFirst(this.properties.isDropFirst());
+            liquibase.setShouldRun(this.properties.isEnabled());
+            liquibase.setLabels(this.properties.getLabels());
+            liquibase.setChangeLogParameters(this.properties.getParameters());
+            liquibase.setRollbackFile(this.properties.getRollbackFile());
+            liquibase.setTestRollbackOnUpdate(this.properties.isTestRollbackOnUpdate());
 
-			liquibase.setDataSource(dataSource);
-			liquibase.setExtensions(currentConfigurationReader.getCurrentExtensions());
+            liquibase.setDataSource(dataSource);
+            liquibase.setExtensions(currentConfigurationReader.getCurrentExtensions());
 
-			return liquibase;
-		}
-	}
+            return liquibase;
+        }
+    }
 
 
 }

@@ -11,14 +11,14 @@ import java.util.Optional;
  */
 public interface DynamicExtensionClassService extends Service {
 
-	ClassLoader getClassLoader();
+    ClassLoader getClassLoader();
 
-	List<Class<?>> getExtensionClasses();
+    List<Class<?>> getExtensionClasses();
 
-	Optional<Class<?>> findExtensionByInterface(Class<?> target);
+    Optional<Class<?>> findExtensionByInterface(Class<?> target);
 
-	boolean hasExtension(Class<?> target);
+    boolean hasExtension(Class<?> target);
 
-	<T> Optional<T> createExtensionClassByInterface(Class<T> target, Map<String, Object> properties);
+    <T> Optional<T> createExtensionClassByInterface(Class<T> target, Map<String, Object> properties);
 
 }

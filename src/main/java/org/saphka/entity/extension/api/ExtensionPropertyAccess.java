@@ -4,10 +4,10 @@ import java.util.Map;
 
 public interface ExtensionPropertyAccess {
 
-	Object getProperty(String property);
+    Object getProperty(String property);
 
-	void setProperty(String property, Object value);
+    void setProperty(String property, Object value);
 
-	Map<String, Object> getPropertiesMap();
+    Map<String, Object> getPropertiesMap();
 
 }

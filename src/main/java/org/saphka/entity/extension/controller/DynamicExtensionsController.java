@@ -20,43 +20,43 @@ import java.util.List;
 @RequestMapping(path = "${entity.extension.controller.path:/parameters/entity/extensions}")
 public class DynamicExtensionsController {
 
-	private final ExtensionBusinessLogic businessLogic;
-	private final KnowExtensionPointsProvider knowExtensionPointsProvider;
-	private final String controllerPath;
+    private final ExtensionBusinessLogic businessLogic;
+    private final KnowExtensionPointsProvider knowExtensionPointsProvider;
+    private final String controllerPath;
 
-	@Autowired
-	public DynamicExtensionsController(ExtensionBusinessLogic businessLogic,
-									   KnowExtensionPointsProvider knowExtensionPointsProvider, @Value("${entity.extension.controller.path:/parameters/entity/extensions}") String controllerPath) {
-		this.businessLogic = businessLogic;
-		this.knowExtensionPointsProvider = knowExtensionPointsProvider;
-		this.controllerPath = controllerPath;
-	}
+    @Autowired
+    public DynamicExtensionsController(ExtensionBusinessLogic businessLogic,
+                                       KnowExtensionPointsProvider knowExtensionPointsProvider, @Value("${entity.extension.controller.path:/parameters/entity/extensions}") String controllerPath) {
+        this.businessLogic = businessLogic;
+        this.knowExtensionPointsProvider = knowExtensionPointsProvider;
+        this.controllerPath = controllerPath;
+    }
 
-	@GetMapping
-	public ResponseEntity<List<ExtensionDTO>> getAllExtensions() {
-		return ResponseEntity.ok(businessLogic.getRegisteredExtensions());
-	}
+    @GetMapping
+    public ResponseEntity<List<ExtensionDTO>> getAllExtensions() {
+        return ResponseEntity.ok(businessLogic.getRegisteredExtensions());
+    }
 
-	@GetMapping(path = "/{id:[\\w.]+}")
-	public ResponseEntity<ExtensionDTO> getExtensionById(@PathVariable("id") String extensionId) {
-		return ResponseEntity.of(businessLogic.getRegisteredExtension(extensionId));
-	}
+    @GetMapping(path = "/{id:[\\w.]+}")
+    public ResponseEntity<ExtensionDTO> getExtensionById(@PathVariable("id") String extensionId) {
+        return ResponseEntity.of(businessLogic.getRegisteredExtension(extensionId));
+    }
 
-	@PostMapping
-	public ResponseEntity<FieldDTO> createNewExtension(@RequestBody @Valid NewFieldDTO fieldDTO, UriComponentsBuilder ucb) {
-		FieldDTO createdField = businessLogic.createExtension(fieldDTO);
+    @PostMapping
+    public ResponseEntity<FieldDTO> createNewExtension(@RequestBody @Valid NewFieldDTO fieldDTO, UriComponentsBuilder ucb) {
+        FieldDTO createdField = businessLogic.createExtension(fieldDTO);
 
-		return ResponseEntity.created(ucb.path(controllerPath + "/fields/{id}").buildAndExpand(createdField.getId()).toUri()).body(createdField);
-	}
+        return ResponseEntity.created(ucb.path(controllerPath + "/fields/{id}").buildAndExpand(createdField.getId()).toUri()).body(createdField);
+    }
 
-	@GetMapping("/known")
-	public ResponseEntity<Collection<ExtensionSimpleDTO>> getKnownPoints() {
-		return ResponseEntity.ok(knowExtensionPointsProvider.getKnownExtensionPoints().values());
-	}
+    @GetMapping("/known")
+    public ResponseEntity<Collection<ExtensionSimpleDTO>> getKnownPoints() {
+        return ResponseEntity.ok(knowExtensionPointsProvider.getKnownExtensionPoints().values());
+    }
 
-	@GetMapping("/types")
-	public ResponseEntity<List<FieldConfigDTO>> getPossibleTypes() {
-		return ResponseEntity.ok(businessLogic.getPossibleFieldTypes());
-	}
+    @GetMapping("/types")
+    public ResponseEntity<List<FieldConfigDTO>> getPossibleTypes() {
+        return ResponseEntity.ok(businessLogic.getPossibleFieldTypes());
+    }
 
 }

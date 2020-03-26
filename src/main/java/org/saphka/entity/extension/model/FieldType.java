@@ -11,79 +11,79 @@ import java.math.BigDecimal;
  */
 public enum FieldType {
 
-	STRING(String.class, "java.sql.Types.NVARCHAR"),
-	NUMBER(Long.class, "java.sql.Types.BIGINT"),
-	DECIMAL(BigDecimal.class, "java.sql.Types.DECIMAL");
+    STRING(String.class, "java.sql.Types.NVARCHAR"),
+    NUMBER(Long.class, "java.sql.Types.BIGINT"),
+    DECIMAL(BigDecimal.class, "java.sql.Types.DECIMAL");
 
-	private final String javaType;
-	private final String sqlType;
+    private final String javaType;
+    private final String sqlType;
 
-	FieldType(Class<?> clazz, String sqlType) {
-		this.javaType = clazz.getCanonicalName();
-		this.sqlType = sqlType;
-	}
+    FieldType(Class<?> clazz, String sqlType) {
+        this.javaType = clazz.getCanonicalName();
+        this.sqlType = sqlType;
+    }
 
-	public String getJavaTypeWithConstraint(Integer length, Integer fraction) {
-		String annotation = Strings.EMPTY;
-		switch (this) {
-			case STRING:
-				annotation = "@" + javax.validation.constraints.Size.class.getCanonicalName() + "(min = 1, max = " + length + ")";
-				break;
-			case NUMBER:
-				break;
-			case DECIMAL:
-				annotation = "@" + javax.validation.constraints.Digits.class.getCanonicalName() + "(integer = " + (length - fraction) + ", fraction = " + fraction + ")";
-				break;
-			default:
-				throw new IllegalArgumentException("Unknown filed type " + this.name());
-		}
+    public String getJavaTypeWithConstraint(Integer length, Integer fraction) {
+        String annotation = Strings.EMPTY;
+        switch (this) {
+            case STRING:
+                annotation = "@" + javax.validation.constraints.Size.class.getCanonicalName() + "(min = 1, max = " + length + ")";
+                break;
+            case NUMBER:
+                break;
+            case DECIMAL:
+                annotation = "@" + javax.validation.constraints.Digits.class.getCanonicalName() + "(integer = " + (length - fraction) + ", fraction = " + fraction + ")";
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown filed type " + this.name());
+        }
 
-		return annotation + " \n" + javaType;
-	}
+        return annotation + " \n" + javaType;
+    }
 
-	public String getLiquibaseType(Integer length, Integer fraction) {
-		switch (this) {
-			case STRING:
-				return sqlType + "(" + length + ")";
-			case NUMBER:
-				return sqlType;
-			case DECIMAL:
-				return sqlType + "(" + length + "," + fraction + ")";
-		}
+    public String getLiquibaseType(Integer length, Integer fraction) {
+        switch (this) {
+            case STRING:
+                return sqlType + "(" + length + ")";
+            case NUMBER:
+                return sqlType;
+            case DECIMAL:
+                return sqlType + "(" + length + "," + fraction + ")";
+        }
 
-		throw new IllegalArgumentException("Unknown filed type " + this.name());
-	}
+        throw new IllegalArgumentException("Unknown filed type " + this.name());
+    }
 
-	public FieldConfig getConfig() {
-		switch (this) {
-			case STRING:
-				return new FieldConfig(true, false);
-			case NUMBER:
-				return new FieldConfig(false, false);
-			case DECIMAL:
-				return new FieldConfig(true, true);
-		}
+    public FieldConfig getConfig() {
+        switch (this) {
+            case STRING:
+                return new FieldConfig(true, false);
+            case NUMBER:
+                return new FieldConfig(false, false);
+            case DECIMAL:
+                return new FieldConfig(true, true);
+        }
 
-		throw new IllegalArgumentException("Unknown filed type " + this.name());
-	}
+        throw new IllegalArgumentException("Unknown filed type " + this.name());
+    }
 
-	public static class FieldConfig {
-		private final Boolean needsLength;
-		private final Boolean needsFraction;
+    public static class FieldConfig {
+        private final Boolean needsLength;
+        private final Boolean needsFraction;
 
-		@JsonCreator
-		public FieldConfig(@JsonProperty("needsLength") Boolean needsLength,
-						   @JsonProperty("needsFraction") Boolean needsFraction) {
-			this.needsLength = needsLength;
-			this.needsFraction = needsFraction;
-		}
+        @JsonCreator
+        public FieldConfig(@JsonProperty("needsLength") Boolean needsLength,
+                           @JsonProperty("needsFraction") Boolean needsFraction) {
+            this.needsLength = needsLength;
+            this.needsFraction = needsFraction;
+        }
 
-		public Boolean getNeedsLength() {
-			return needsLength;
-		}
+        public Boolean getNeedsLength() {
+            return needsLength;
+        }
 
-		public Boolean getNeedsFraction() {
-			return needsFraction;
-		}
-	}
+        public Boolean getNeedsFraction() {
+            return needsFraction;
+        }
+    }
 }

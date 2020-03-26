@@ -1,27 +1,27 @@
 <databaseChangeLog
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="TEST_DATA" author="LognovAS" dbms="h2">
-		<sql>
-			INSERT INTO CONFIG_EXTENSION_POINT
-			(GUID, EXTENSION_ID, TABLE_NAME)
-			values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'MY_ENTITY');
-			INSERT INTO CONFIG_EXTENSION_FIELD
-			(GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
-			values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'FIRST', 'STRING',
-			40, 0);
-			INSERT INTO CONFIG_EXTENSION_FIELD
-			(GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
-			values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'LAST', 'STRING',
-			40, 0);
-			INSERT INTO CONFIG_EXTENSION_FIELD
-			(GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
-			values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'AGE', 'NUMBER',
-			0, 0);
-		</sql>
-	</changeSet>
+    <changeSet id="TEST_DATA" author="LognovAS" dbms="h2">
+        <sql>
+            INSERT INTO CONFIG_EXTENSION_POINT
+            (GUID, EXTENSION_ID, TABLE_NAME)
+            values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'MY_ENTITY');
+            INSERT INTO CONFIG_EXTENSION_FIELD
+            (GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
+            values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'FIRST', 'STRING',
+            40, 0);
+            INSERT INTO CONFIG_EXTENSION_FIELD
+            (GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
+            values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'LAST', 'STRING',
+            40, 0);
+            INSERT INTO CONFIG_EXTENSION_FIELD
+            (GUID, EXTENSION_ID, FIELD_NAME, FIELD_TYPE, FIELD_LENGTH, FIELD_FRACTION)
+            values (random_uuid(), 'org.saphka.entity.test.MyEntityExtension', 'AGE', 'NUMBER',
+            0, 0);
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

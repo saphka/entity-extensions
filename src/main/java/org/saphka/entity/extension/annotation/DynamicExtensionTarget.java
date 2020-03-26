@@ -8,6 +8,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface DynamicExtensionTarget {
 
-	String tableName();
+    String tableName();
 
 }

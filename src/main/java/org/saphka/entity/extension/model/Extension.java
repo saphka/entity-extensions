@@ -14,42 +14,42 @@ import java.util.UUID;
 @Table(name = DynamicExtensionSettings.EXT_TABLE_NAME)
 public class Extension {
 
-	@Id
-	@Column(name = "GUID")
-	@NotNull
-	private UUID id;
+    @Id
+    @Column(name = "GUID")
+    @NotNull
+    private UUID id;
 
-	@Column(name = "EXTENSION_ID", unique = true)
-	@Size(min = 1, max = 200)
-	@NotNull
-	private String extensionId;
+    @Column(name = "EXTENSION_ID", unique = true)
+    @Size(min = 1, max = 200)
+    @NotNull
+    private String extensionId;
 
-	@Column(name = "TABLE_NAME")
-	@Size(min = 1, max = 100)
-	@NotNull
-	private String tableName;
+    @Column(name = "TABLE_NAME")
+    @Size(min = 1, max = 100)
+    @NotNull
+    private String tableName;
 
-	public UUID getId() {
-		return id;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-	public String getExtensionId() {
-		return extensionId;
-	}
+    public String getExtensionId() {
+        return extensionId;
+    }
 
-	public void setExtensionId(String extensionId) {
-		this.extensionId = extensionId;
-	}
+    public void setExtensionId(String extensionId) {
+        this.extensionId = extensionId;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
+    public String getTableName() {
+        return tableName;
+    }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 }

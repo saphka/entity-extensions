@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CurrentConfigurationReader {
 
-	List<ExtensionDTO> getCurrentExtensions();
+    List<ExtensionDTO> getCurrentExtensions();
 
 }

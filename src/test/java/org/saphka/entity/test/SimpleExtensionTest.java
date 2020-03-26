@@ -39,84 +39,84 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {Application.class, SimpleExtensionTest.TestConfiguration.class})
 public class SimpleExtensionTest {
 
-	@Configuration
-	@Order(Ordered.HIGHEST_PRECEDENCE + 10)
-	public static class TestConfiguration {
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE + 10)
+    public static class TestConfiguration {
 
-		//trick to init table before class loading
-		@Bean
-		public DynamicExtensionClassSource getDataSource(DataSource dataSource) throws IOException {
-			Connection connection = null;
-			Statement statement = null;
-			try {
-				connection = dataSource.getConnection();
+        //trick to init table before class loading
+        @Bean
+        public DynamicExtensionClassSource getDataSource(DataSource dataSource) throws IOException {
+            Connection connection = null;
+            Statement statement = null;
+            try {
+                connection = dataSource.getConnection();
 
-				statement = connection.createStatement();
+                statement = connection.createStatement();
 
-				statement.executeUpdate(
-						IOUtils.toString(new ClassPathResource("test/schema-h2.sql").getInputStream(), Charset.defaultCharset())
-				);
-				statement.executeUpdate(
-						IOUtils.toString(new ClassPathResource("test/data-h2.sql").getInputStream(), Charset.defaultCharset())
-				);
-				connection.commit();
-			} catch (SQLException ignored) {
-			} finally {
-				JdbcUtils.closeStatement(statement);
-				JdbcUtils.closeConnection(connection);
-			}
+                statement.executeUpdate(
+                        IOUtils.toString(new ClassPathResource("test/schema-h2.sql").getInputStream(), Charset.defaultCharset())
+                );
+                statement.executeUpdate(
+                        IOUtils.toString(new ClassPathResource("test/data-h2.sql").getInputStream(), Charset.defaultCharset())
+                );
+                connection.commit();
+            } catch (SQLException ignored) {
+            } finally {
+                JdbcUtils.closeStatement(statement);
+                JdbcUtils.closeConnection(connection);
+            }
 
-			return Collections::emptyList;
-		}
-	}
+            return Collections::emptyList;
+        }
+    }
 
-	@Autowired
-	private DynamicExtensionClassService extensionService;
+    @Autowired
+    private DynamicExtensionClassService extensionService;
 
-	@Autowired
-	private MyEntityRepository repository;
+    @Autowired
+    private MyEntityRepository repository;
 
-	@Autowired
-	private EntityManager entityManager;
+    @Autowired
+    private EntityManager entityManager;
 
-	@Test
-	public void entityCreateTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-		Class<?> aClass = extensionService.findExtensionByInterface(MyEntityExtension.class).orElseThrow(() -> new IllegalArgumentException(""));
+    @Test
+    public void entityCreateTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> aClass = extensionService.findExtensionByInterface(MyEntityExtension.class).orElseThrow(() -> new IllegalArgumentException(""));
 
-		HashMap<String, Object> data = new HashMap<>();
-		data.put("first", "Foo");
-		data.put("last", "Bar");
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("first", "Foo");
+        data.put("last", "Bar");
 
-		MyEntityExtension extension = (MyEntityExtension) aClass.getDeclaredConstructor(Map.class).newInstance(data);
-		MyEntityExtensionEmpty extensionEmpty = (MyEntityExtensionEmpty) extensionService.findExtensionByInterface(MyEntityExtensionEmpty.class).map(aClass1 -> {
-			try {
-				return aClass1.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}).orElseThrow(IllegalArgumentException::new);
+        MyEntityExtension extension = (MyEntityExtension) aClass.getDeclaredConstructor(Map.class).newInstance(data);
+        MyEntityExtensionEmpty extensionEmpty = (MyEntityExtensionEmpty) extensionService.findExtensionByInterface(MyEntityExtensionEmpty.class).map(aClass1 -> {
+            try {
+                return aClass1.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }).orElseThrow(IllegalArgumentException::new);
 
 //		if (true) return;
 
-		MyEntity entity = new MyEntity();
-		entity.setId(1L);
-		entity.setExtension(extension);
-		entity.setEmpty(extensionEmpty);
+        MyEntity entity = new MyEntity();
+        entity.setId(1L);
+        entity.setExtension(extension);
+        entity.setEmpty(extensionEmpty);
 
-		repository.save(entity);
+        repository.save(entity);
 
-		List select_last_from_my_entitty = entityManager.createNativeQuery(
-				"SELECT LAST, FIRST FROM PUBLIC.MY_ENTITY"
-		).getResultList();
-		assertThat(select_last_from_my_entitty).hasSize(1);
+        List select_last_from_my_entitty = entityManager.createNativeQuery(
+                "SELECT LAST, FIRST FROM PUBLIC.MY_ENTITY"
+        ).getResultList();
+        assertThat(select_last_from_my_entitty).hasSize(1);
 
-		Object firstResult = select_last_from_my_entitty.get(0);
-		assertThat(firstResult).isInstanceOf(Object[].class);
+        Object firstResult = select_last_from_my_entitty.get(0);
+        assertThat(firstResult).isInstanceOf(Object[].class);
 
-		Object[] firstResultArray = (Object[]) firstResult;
-		assertThat(firstResultArray[0]).isEqualTo("Bar");
-		assertThat(firstResultArray[1]).isEqualTo("Foo");
+        Object[] firstResultArray = (Object[]) firstResult;
+        assertThat(firstResultArray[0]).isEqualTo("Bar");
+        assertThat(firstResultArray[1]).isEqualTo("Foo");
 
-	}
+    }
 
 }

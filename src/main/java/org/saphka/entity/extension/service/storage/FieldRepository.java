@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface FieldRepository extends JpaRepository<Field, UUID> {
 
-	boolean existsByExtensionIdAndFieldName(String extensionId, String fieldName);
+    boolean existsByExtensionIdAndFieldName(String extensionId, String fieldName);
 
-	List<Field> findByExtensionId(String extensionId);
+    List<Field> findByExtensionId(String extensionId);
 
 }

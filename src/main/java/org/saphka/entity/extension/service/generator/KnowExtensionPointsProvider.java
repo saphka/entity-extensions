@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface KnowExtensionPointsProvider {
 
-	Map<String, ExtensionSimpleDTO> getKnownExtensionPoints();
+    Map<String, ExtensionSimpleDTO> getKnownExtensionPoints();
 }

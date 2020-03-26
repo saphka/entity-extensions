@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 @Import({DynamicExtensionAutoConfiguration.class})
 public @interface EnableDynamicExtensions {
 
-	String[] basePackages() default {};
+    String[] basePackages() default {};
 }

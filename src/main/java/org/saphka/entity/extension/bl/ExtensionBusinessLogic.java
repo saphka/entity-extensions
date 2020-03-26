@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface ExtensionBusinessLogic {
 
-	@Transactional
-	FieldDTO createExtension(String extensionId, String fieldName, FieldType fieldType, Long fieldLength, Long fieldFraction);
+    @Transactional
+    FieldDTO createExtension(String extensionId, String fieldName, FieldType fieldType, Long fieldLength, Long fieldFraction);
 
-	List<ExtensionDTO> getRegisteredExtensions();
+    List<ExtensionDTO> getRegisteredExtensions();
 
-	Optional<ExtensionDTO> getRegisteredExtension(String extensionId);
+    Optional<ExtensionDTO> getRegisteredExtension(String extensionId);
 
 }

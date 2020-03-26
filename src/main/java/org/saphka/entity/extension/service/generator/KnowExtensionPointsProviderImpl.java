@@ -23,67 +23,67 @@ import java.util.stream.Collectors;
 @Component
 public class KnowExtensionPointsProviderImpl implements KnowExtensionPointsProvider, InitializingBean {
 
-	private final ConfigurableApplicationContext applicationContext;
-	private final Map<String, ExtensionSimpleDTO> knownPoints = new HashMap<>();
+    private final ConfigurableApplicationContext applicationContext;
+    private final Map<String, ExtensionSimpleDTO> knownPoints = new HashMap<>();
 
-	@Autowired
-	public KnowExtensionPointsProviderImpl(ConfigurableApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
+    @Autowired
+    public KnowExtensionPointsProviderImpl(ConfigurableApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-	@Override
-	public Map<String, ExtensionSimpleDTO> getKnownExtensionPoints() {
-		return Collections.unmodifiableMap(knownPoints);
-	}
+    @Override
+    public Map<String, ExtensionSimpleDTO> getKnownExtensionPoints() {
+        return Collections.unmodifiableMap(knownPoints);
+    }
 
-	private Map<String, ExtensionSimpleDTO> initKnownPoints() {
-		ClassLoader classLoader = Objects.requireNonNull(ClassUtils.getDefaultClassLoader());
+    private Map<String, ExtensionSimpleDTO> initKnownPoints() {
+        ClassLoader classLoader = Objects.requireNonNull(ClassUtils.getDefaultClassLoader());
 
-		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false) {
-			@Override
-			protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-				AnnotationMetadata metadata = beanDefinition.getMetadata();
-				return (metadata.isIndependent() && metadata.isInterface());
-			}
-		};
-		scanner.addIncludeFilter(new AnnotationTypeFilter(DynamicExtensionTarget.class, true, true));
+        ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false) {
+            @Override
+            protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+                AnnotationMetadata metadata = beanDefinition.getMetadata();
+                return (metadata.isIndependent() && metadata.isInterface());
+            }
+        };
+        scanner.addIncludeFilter(new AnnotationTypeFilter(DynamicExtensionTarget.class, true, true));
 
-		ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
+        ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
 
-		return beanFactory.getBeansWithAnnotation(EnableDynamicExtensions.class).values().stream()
-				.map(Object::getClass)
-				.map((clazz) -> {
-					EnableDynamicExtensions annotation = AnnotationUtils.findAnnotation(clazz, EnableDynamicExtensions.class);
-					return annotation != null ? Pair.of(clazz, annotation) : null;
-				})
-				.filter(Objects::nonNull)
-				.map((p) -> {
-					String[] basePackages = p.getSecond().basePackages();
+        return beanFactory.getBeansWithAnnotation(EnableDynamicExtensions.class).values().stream()
+                .map(Object::getClass)
+                .map((clazz) -> {
+                    EnableDynamicExtensions annotation = AnnotationUtils.findAnnotation(clazz, EnableDynamicExtensions.class);
+                    return annotation != null ? Pair.of(clazz, annotation) : null;
+                })
+                .filter(Objects::nonNull)
+                .map((p) -> {
+                    String[] basePackages = p.getSecond().basePackages();
 
-					return !ArrayUtils.isEmpty(basePackages) ? basePackages : (new String[]{p.getFirst().getPackage().getName()});
-				})
-				.flatMap(Arrays::stream)
-				.map(scanner::findCandidateComponents)
-				.flatMap(Collection::stream)
-				.map((bean) -> {
-					try {
-						return new ExtensionSimpleDTO(
-								bean.getBeanClassName(),
-								classLoader.loadClass(bean.getBeanClassName()).getAnnotation(DynamicExtensionTarget.class).tableName()
+                    return !ArrayUtils.isEmpty(basePackages) ? basePackages : (new String[]{p.getFirst().getPackage().getName()});
+                })
+                .flatMap(Arrays::stream)
+                .map(scanner::findCandidateComponents)
+                .flatMap(Collection::stream)
+                .map((bean) -> {
+                    try {
+                        return new ExtensionSimpleDTO(
+                                bean.getBeanClassName(),
+                                classLoader.loadClass(bean.getBeanClassName()).getAnnotation(DynamicExtensionTarget.class).tableName()
 
-						);
-					} catch (ClassNotFoundException e) {
-						throw new IllegalArgumentException(e);
-					}
-				})
-				.collect(Collectors.toMap(
-						ExtensionSimpleDTO::getExtensionId,
-						(e) -> e
-				));
-	}
+                        );
+                    } catch (ClassNotFoundException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .collect(Collectors.toMap(
+                        ExtensionSimpleDTO::getExtensionId,
+                        (e) -> e
+                ));
+    }
 
-	@Override
-	public void afterPropertiesSet() {
-		knownPoints.putAll(initKnownPoints());
-	}
+    @Override
+    public void afterPropertiesSet() {
+        knownPoints.putAll(initKnownPoints());
+    }
 }

@@ -16,41 +16,41 @@ import java.util.Properties;
 @Component
 public class DynamicExtensionEntityManagerFactoryBeanPostProcessor implements BeanPostProcessor {
 
-	private final DynamicExtensionClassService dynamicExtensionClassService;
+    private final DynamicExtensionClassService dynamicExtensionClassService;
 
-	@Autowired
-	public DynamicExtensionEntityManagerFactoryBeanPostProcessor(DynamicExtensionClassService dynamicExtensionClassService) {
-		this.dynamicExtensionClassService = dynamicExtensionClassService;
-	}
+    @Autowired
+    public DynamicExtensionEntityManagerFactoryBeanPostProcessor(DynamicExtensionClassService dynamicExtensionClassService) {
+        this.dynamicExtensionClassService = dynamicExtensionClassService;
+    }
 
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (bean instanceof LocalContainerEntityManagerFactoryBean) {
-			postProcess((LocalContainerEntityManagerFactoryBean) bean);
-		}
-		return bean;
-	}
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof LocalContainerEntityManagerFactoryBean) {
+            postProcess((LocalContainerEntityManagerFactoryBean) bean);
+        }
+        return bean;
+    }
 
-	private void postProcess(LocalContainerEntityManagerFactoryBean bean) {
-		bean.getJpaPropertyMap().put(
-				AvailableSettings.CLASSLOADERS,
-				Collections.singletonList(dynamicExtensionClassService.getClassLoader())
-		);
+    private void postProcess(LocalContainerEntityManagerFactoryBean bean) {
+        bean.getJpaPropertyMap().put(
+                AvailableSettings.CLASSLOADERS,
+                Collections.singletonList(dynamicExtensionClassService.getClassLoader())
+        );
 
-		bean.setPersistenceUnitPostProcessors((mutableUnitInfo) -> {
-			Properties properties = mutableUnitInfo.getProperties();
-			properties.put(
-					AvailableSettings.LOADED_CLASSES,
-					dynamicExtensionClassService.getExtensionClasses()
-			);
-			properties.put(
-					DynamicExtensionSettings.DYNAMIC_SERVICE,
-					dynamicExtensionClassService
-			);
+        bean.setPersistenceUnitPostProcessors((mutableUnitInfo) -> {
+            Properties properties = mutableUnitInfo.getProperties();
+            properties.put(
+                    AvailableSettings.LOADED_CLASSES,
+                    dynamicExtensionClassService.getExtensionClasses()
+            );
+            properties.put(
+                    DynamicExtensionSettings.DYNAMIC_SERVICE,
+                    dynamicExtensionClassService
+            );
 
-			dynamicExtensionClassService.getExtensionClasses().stream().map(
-					Class::getCanonicalName
-			).forEach(mutableUnitInfo::addManagedClassName);
-		});
-	}
+            dynamicExtensionClassService.getExtensionClasses().stream().map(
+                    Class::getCanonicalName
+            ).forEach(mutableUnitInfo::addManagedClassName);
+        });
+    }
 }

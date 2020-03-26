@@ -15,22 +15,22 @@ import java.util.List;
 @RequestMapping(path = "${entity.extension.controller.path:/parameters/entity/extensions}")
 public class DynamicExtensionsController {
 
-	private final ExtensionBusinessLogic businessLogic;
+    private final ExtensionBusinessLogic businessLogic;
 
-	@Autowired
-	public DynamicExtensionsController(ExtensionBusinessLogic businessLogic) {
-		this.businessLogic = businessLogic;
-	}
+    @Autowired
+    public DynamicExtensionsController(ExtensionBusinessLogic businessLogic) {
+        this.businessLogic = businessLogic;
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ExtensionDTO>> getAllExtensions() {
-		return ResponseEntity.ok(businessLogic.getRegisteredExtensions());
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ExtensionDTO>> getAllExtensions() {
+        return ResponseEntity.ok(businessLogic.getRegisteredExtensions());
+    }
 
-	@RequestMapping(method = RequestMethod.GET, path = "/{id:[\\w.]+}")
-	public ResponseEntity<ExtensionDTO> getExtensionById(@PathVariable("id") String extensionId) {
-		return ResponseEntity.of(businessLogic.getRegisteredExtension(extensionId));
-	}
+    @RequestMapping(method = RequestMethod.GET, path = "/{id:[\\w.]+}")
+    public ResponseEntity<ExtensionDTO> getExtensionById(@PathVariable("id") String extensionId) {
+        return ResponseEntity.of(businessLogic.getRegisteredExtension(extensionId));
+    }
 
 
 }

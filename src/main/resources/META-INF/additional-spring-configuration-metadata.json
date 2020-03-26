@@ -4,6 +4,11 @@
       "name": "entity.extension.controller.path",
       "type": "java.lang.String",
       "description": "REST Controller Path."
+    },
+    {
+      "name": "entity.extension.liquibase.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable liquibase."
     }
   ]
 }

@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
+/**
+ * @author Alex Loginov
+ */
 @Entity
 @Table(name = DynamicExtensionSettings.EXT_TABLE_NAME)
 public class Extension {

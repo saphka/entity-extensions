@@ -20,6 +20,9 @@ import org.springframework.util.ClassUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alex Loginov
+ */
 @Component
 public class KnowExtensionPointsProviderImpl implements KnowExtensionPointsProvider, InitializingBean {
 

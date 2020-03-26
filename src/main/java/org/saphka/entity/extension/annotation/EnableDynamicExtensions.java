@@ -5,6 +5,12 @@ import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
+/**
+ * @author Alex Loginov
+ * <p>
+ * Enables extension framework auto-configuration
+ */
+
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

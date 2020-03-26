@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * @author Alex Loginov
+ */
 public interface ExtensionRepository extends JpaRepository<Extension, UUID> {
 
     boolean existsByExtensionId(String extensionId);
